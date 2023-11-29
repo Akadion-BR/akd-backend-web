@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "056c17c4-2d00-4fec-9589-2796a7d6596b",
+		"name": "Plano de assinatura",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19701119"
+	},
+	"item": [
+		{
+			"name": "Atualiza plano",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tipoPlano\": \"STANDART\", \r\n    \"formaPagamentoSistema\": \"PIX\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/site/v1/plano/a14da5d1-f544-4e24-8a46-23c877b6c445",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"site",
+						"v1",
+						"plano",
+						"a14da5d1-f544-4e24-8a46-23c877b6c445"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - OK",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoPlano\": \"STANDART\", \r\n    \"formaPagamentoSistema\": \"PIX\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/site/v1/plano/a14da5d1-f544-4e24-8a46-23c877b6c445",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"site",
+								"v1",
+								"plano",
+								"a14da5d1-f544-4e24-8a46-23c877b6c445"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 27 Nov 2023 21:17:56 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"e0a4bf95-2656-44df-9593-94ee5b062524\",\n    \"dataContratacao\": \"2023-11-27\",\n    \"horaContratacao\": \"18:16:36.528558900\",\n    \"dataVencimento\": \"2023-12-04\",\n    \"tipoPlanoEnum\": \"STANDART\",\n    \"statusPlanoEnum\": \"PERIODO_DE_TESTES\",\n    \"formaPagamentoSistemaEnum\": \"PIX\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Cancela plano",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/api/site/v1/plano/a14da5d1-f544-4e24-8a46-23c877b6c445",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"site",
+						"v1",
+						"plano",
+						"a14da5d1-f544-4e24-8a46-23c877b6c445"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - OK",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/site/v1/plano/a14da5d1-f544-4e24-8a46-23c877b6c445",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"site",
+								"v1",
+								"plano",
+								"a14da5d1-f544-4e24-8a46-23c877b6c445"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 27 Nov 2023 21:18:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"e0a4bf95-2656-44df-9593-94ee5b062524\",\n    \"dataContratacao\": \"2023-11-27\",\n    \"horaContratacao\": \"18:16:36.528558900\",\n    \"dataVencimento\": \"2023-12-04\",\n    \"tipoPlanoEnum\": \"STANDART\",\n    \"statusPlanoEnum\": \"PERIODO_DE_TESTES\",\n    \"formaPagamentoSistemaEnum\": \"PIX\"\n}"
+				}
+			]
+		}
+	]
+}
