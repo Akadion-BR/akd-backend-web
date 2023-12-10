@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum ProxyModuleEnum {
     CLIENTE_SISTEMICO(0, "CLIENTE SISTÊMICO"),
     PLANO(1, "PLANO DE ASSINATURA"),
-    COBRANCA(3, "COBRANÇA");
+    COBRANCA(3, "COBRANÇA"),
+    COLABORADOR_RAIZ(4, "COLABORADOR RAIZ");
 
     private final int code;
     private final String desc;

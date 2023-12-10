@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.akd.svc.akadion</groupId>
-	<artifactId>web</artifactId>
+	<artifactId>SVC-WEB</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>web</name>
 	<description>Serviço Akadion web</description>

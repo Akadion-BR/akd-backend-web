@@ -12,17 +12,18 @@ import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.empresa.repository.impl.EmpresaRepositoryImpl;
 import br.akd.svc.akadion.web.modules.empresa.services.crud.EmpresaService;
 import br.akd.svc.akadion.web.modules.empresa.services.validator.EmpresaValidationService;
+import br.akd.svc.akadion.web.modules.external.erp.colaborador.CriacaoColaboradorResponse;
+import br.akd.svc.akadion.web.modules.external.erp.proxy.impl.ColaboradorProxyImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Slf4j
 @Service
 public class EmpresaServiceImpl implements EmpresaService {
-
-    // TODO ADICIONAR ANNOTATION OVERRIDE NOS MÉTODOS SOBRESCRITOS
 
     @Autowired
     EmpresaRepositoryImpl empresaRepositoryImpl;
@@ -36,6 +37,11 @@ public class EmpresaServiceImpl implements EmpresaService {
     @Autowired
     ClienteSistemaValidationService clienteSistemaValidationService;
 
+    @Autowired
+    ColaboradorProxyImpl colaboradorProxy;
+
+    @Override
+    @Transactional
     public CriaEmpresaResponse criaNovaEmpresa(UUID idClienteSistemaSessao,
                                                EmpresaRequest empresaRequest) {
 
@@ -70,22 +76,24 @@ public class EmpresaServiceImpl implements EmpresaService {
                 .obtemEmpresaPorRazaoSocial(empresaRequest.getRazaoSocial());
         log.info("Empresa persistida obtida com sucesso");
 
-//        log.debug("Iniciando acesso ao método de criação de novo colaborador admin para empresa...");
-//        ColaboradorEntity colaborador = criaColaboradorAdminParaNovaEmpresa(empresaCriada);     //TODO AJUSTAR - INTEGRAÇÃO DE MS
-//        log.info("Colaborador criado com sucesso para nova empresa");
+        log.debug("Iniciando acesso ao método de criação de novo colaborador admin para empresa...");
+        CriacaoColaboradorResponse criacaoColaboradorResponse =
+                colaboradorProxy.realizaCriacaoDeColaboradorNoErp(empresaCriada);
+        log.info("Colaborador criado com sucesso para nova empresa");
 
-//        log.info("Iniciando objeto do tipo CriaEmpresaResponse..."); //TODO AJUSTAR - INTEGRAÇÃO DE MS
-//        CriaEmpresaResponse criaEmpresaResponse = new CriaEmpresaResponse(
-//                clienteSistemaEntity.getId(),
-//                new ColaboradorResponse().buildFromEntity(colaborador),
-//                new EmpresaResponse().buildFromEntity(empresaCriada));
-//        log.info("Objeto criado com sucesso");
-//
-//        log.info("Método responsável por realizar a criação da empresa executado com sucesso. Retornando response...");
-//        return criaEmpresaResponse;
-        return null;
+        log.info("Iniciando objeto do tipo CriaEmpresaResponse...");
+        CriaEmpresaResponse criaEmpresaResponse = new CriaEmpresaResponse(
+                clienteSistemaEntity.getId(),
+                criacaoColaboradorResponse,
+                new EmpresaResponse().buildFromEntity(empresaCriada));
+        log.info("Objeto criado com sucesso");
+
+        log.info("Método responsável por realizar a criação da empresa executado com sucesso. Retornando response...");
+        return criaEmpresaResponse;
     }
 
+    @Override
+    @Transactional
     public EmpresaResponse atualizaEmpresa(UUID idClienteSistemaSessao,
                                            UUID uuidEmpresa,
                                            EmpresaRequest empresaRequest) {
@@ -118,6 +126,8 @@ public class EmpresaServiceImpl implements EmpresaService {
         return empresaResponse;
     }
 
+    @Override
+    @Transactional
     public EmpresaResponse removeEmpresa(UUID idClienteSistemaSessao,
                                          UUID uuidEmpresa) {
 

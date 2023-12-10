@@ -1,9 +1,9 @@
 package br.akd.svc.akadion.web.modules.empresa.controller;
 
+import br.akd.svc.akadion.web.config.UserSS;
 import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
 import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
 import br.akd.svc.akadion.web.exceptions.UnauthorizedAccessException;
-import br.akd.svc.akadion.web.modules.cliente.models.entity.ClienteSistemaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.CriaEmpresaResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.EmpresaResponse;
@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
@@ -34,9 +35,6 @@ import java.util.UUID;
 @Consumes({MediaType.APPLICATION_JSON, "application/json"})
 public class EmpresaController {
 
-    //TODO INSERIR ENDPOINT PARA INSERIR IMAGEM NA EMPRESA
-    //TODO TRATAR AUTHENTICATION PRINCIPAL PARA SE ADEQUAR À LÓGICA DE MÚLTIPLAS LÓGICAS DE  AUTHS
-
     @Autowired
     EmpresaService empresaService;
 
@@ -44,7 +42,7 @@ public class EmpresaController {
      * Cadastro de novo cliente
      * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de criação de novo cliente
      *
-     * @param clienteSistema Dados do cliente sistêmico logado na sessão atual
+     * @param userDetails    Dados do cliente sistêmico logado na sessão atual
      * @param empresaRequest Objeto contendo todos os atributos necessários para a criação de uma nova empresa
      * @return Retorna objeto Empresa criada convertida para o tipo CriaEmpresaResponse
      * @throws InvalidRequestException Exception lançada caso ocorra alguma falha interna na criação da empresa
@@ -67,13 +65,13 @@ public class EmpresaController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = UnauthorizedAccessException.class))})
     })
-    public ResponseEntity<CriaEmpresaResponse> criaEmpresa(@AuthenticationPrincipal ClienteSistemaEntity clienteSistema,
+    public ResponseEntity<CriaEmpresaResponse> criaEmpresa(@AuthenticationPrincipal UserDetails userDetails,
                                                            @RequestBody EmpresaRequest empresaRequest) {
         log.info("Método controlador de criação de nova empresa acessado");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(empresaService.criaNovaEmpresa(
-                        clienteSistema.getId(),
+                        ((UserSS) userDetails).getClienteId(),
                         empresaRequest));
     }
 
@@ -81,7 +79,7 @@ public class EmpresaController {
      * Atualiza empresa
      * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de atualização de empresa por id
      *
-     * @param clienteSistema Dados do cliente sistêmico logado na sessão atual
+     * @param userDetails    Dados do cliente sistêmico logado na sessão atual
      * @param idEmpresa      Id da empresa a ser atualizada
      * @param empresaRequest objeto que deve conter todos os dados necessários para atualização da empresa
      * @return Retorna objeto Empresa encontrada convertida para o tipo EmpresaResponse
@@ -101,13 +99,13 @@ public class EmpresaController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = UnauthorizedAccessException.class))}),
     })
-    public ResponseEntity<EmpresaResponse> atualizaEmpresa(@AuthenticationPrincipal ClienteSistemaEntity clienteSistema,
+    public ResponseEntity<EmpresaResponse> atualizaEmpresa(@AuthenticationPrincipal UserDetails userDetails,
                                                            @PathVariable UUID idEmpresa,
                                                            @RequestBody EmpresaRequest empresaRequest) {
         log.info("Método controlador de atualização de empresa acessado");
         return ResponseEntity.ok().body(
                 empresaService.atualizaEmpresa(
-                        clienteSistema.getId(),
+                        ((UserSS) userDetails).getClienteId(),
                         idEmpresa,
                         empresaRequest));
     }
@@ -116,8 +114,8 @@ public class EmpresaController {
      * Exclusão de empresa
      * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de exclusão de empresa por id
      *
-     * @param clienteSistema Dados do cliente sistêmico logado na sessão atual
-     * @param idEmpresa      Id da empresa a ser removida
+     * @param userDetails Dados do cliente sistêmico logado na sessão atual
+     * @param idEmpresa   Id da empresa a ser removida
      * @return Retorna objeto Empresa removida convertida para o tipo EmpresaResponse
      */
     @DeleteMapping("/{idEmpresa}")
@@ -143,12 +141,12 @@ public class EmpresaController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = InvalidRequestException.class))}),
     })
-    public ResponseEntity<EmpresaResponse> removeEmpresa(@AuthenticationPrincipal ClienteSistemaEntity clienteSistema,
+    public ResponseEntity<EmpresaResponse> removeEmpresa(@AuthenticationPrincipal UserDetails userDetails,
                                                          @PathVariable UUID idEmpresa) {
         log.info("Método controlador de remoção de empresa acessado");
         return ResponseEntity.ok().body(
                 empresaService.removeEmpresa(
-                        clienteSistema.getId(),
+                        ((UserSS) userDetails).getClienteId(),
                         idEmpresa));
     }
 
