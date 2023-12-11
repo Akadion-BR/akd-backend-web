@@ -7,6 +7,7 @@ import br.akd.svc.akadion.web.exceptions.UnauthorizedAccessException;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.CriaEmpresaResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.EmpresaResponse;
+import br.akd.svc.akadion.web.modules.empresa.models.dto.response.page.EmpresaPageResponse;
 import br.akd.svc.akadion.web.modules.empresa.services.crud.EmpresaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -73,6 +75,41 @@ public class EmpresaController {
                 .body(empresaService.criaNovaEmpresa(
                         ((UserSS) userDetails).getClienteId(),
                         empresaRequest));
+    }
+
+    /**
+     * Busca paginada de empresas
+     * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de busca paginada de empresas
+     *
+     * @param userDetails    Dados do usuário logado na sessão atual
+     * @param campoBusca     Parâmetro opcional. Recebe uma string para busca de empresas por atributos específicos
+     * @param empresasAtivas Parâmetro opcional. Recebe uma string para busca de empresas ativas ou inativas
+     * @param pageable       Contém especificações da paginação, como tamanho da página, página atual, etc
+     * @return Retorna objeto do tipo EmpresaPageResponse, que possui informações da paginação e a lista de empresas
+     * encontrados inserida em seu body
+     */
+    @GetMapping
+    @Tag(name = "Busca paginada por empresas cadastradas")
+    @Operation(summary = "Esse endpoint tem como objetivo realizar a busca paginada de empresas cadastradas no " +
+            "cadastro do cliente sistêmico logado que acionou a requisição com os filtros de busca enviados",
+            method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "A busca paginada de empresas foi realizada com sucesso",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EmpresaPageResponse.class))}),
+    })
+    public ResponseEntity<EmpresaPageResponse> obtemEmpresasPaginadas(@AuthenticationPrincipal UserDetails userDetails,
+                                                                      @RequestParam(value = "busca", required = false) String campoBusca,
+                                                                      @RequestParam(value = "ativas", required = false) Boolean empresasAtivas,
+                                                                      Pageable pageable) {
+        log.info("Endpoint de busca paginada por empresas acessado. Acessando service...");
+        return ResponseEntity.ok().body(
+                empresaService.obtemEmpresasClienteSistemico(
+                        pageable,
+                        ((UserSS) userDetails).getClienteId(),
+                        campoBusca,
+                        empresasAtivas));
     }
 
     /**

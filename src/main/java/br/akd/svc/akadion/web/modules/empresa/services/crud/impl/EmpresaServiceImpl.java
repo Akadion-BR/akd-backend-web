@@ -7,15 +7,18 @@ import br.akd.svc.akadion.web.modules.cliente.services.validator.ClienteSistemaV
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.CriaEmpresaResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.EmpresaResponse;
+import br.akd.svc.akadion.web.modules.empresa.models.dto.response.page.EmpresaPageResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.empresa.repository.impl.EmpresaRepositoryImpl;
 import br.akd.svc.akadion.web.modules.empresa.services.crud.EmpresaService;
 import br.akd.svc.akadion.web.modules.empresa.services.validator.EmpresaValidationService;
 import br.akd.svc.akadion.web.modules.external.erp.colaborador.CriacaoColaboradorResponse;
-import br.akd.svc.akadion.web.modules.external.erp.proxy.impl.ColaboradorProxyImpl;
+import br.akd.svc.akadion.web.modules.external.erp.colaborador.proxy.impl.ColaboradorProxyImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,38 +48,38 @@ public class EmpresaServiceImpl implements EmpresaService {
     public CriaEmpresaResponse criaNovaEmpresa(UUID idClienteSistemaSessao,
                                                EmpresaRequest empresaRequest) {
 
-        log.debug("Método de serviço responsável pelo tratamento do objeto recebido e criação de nova empresa acessado");
-        log.debug("Empresa recebida: {} | Id do cliente: {}", empresaRequest, idClienteSistemaSessao);
+        log.info("Método de serviço responsável pelo tratamento do objeto recebido e criação de nova empresa acessado");
+        log.info("EmpresaRequest recebido: {} | Id do cliente sistêmico: {}", empresaRequest, idClienteSistemaSessao);
 
-        log.debug("Iniciando acesso ao método de implementação de busca de cliente por id...");
+        log.info("Iniciando acesso ao método de implementação de busca de cliente por id...");
         ClienteSistemaEntity clienteSistema = clienteSistemaRepositoryImpl
                 .implementaBuscaPorId(idClienteSistemaSessao);
 
-        log.debug("Iniciando acesso ao método de validação de quantidade limite de empresas por cliente...");
+        log.info("Iniciando acesso ao método de validação de quantidade limite de empresas por cliente...");
         clienteSistemaValidationService.validaSeCadastroDeNovaEmpresaIraExcederLimiteDeEmpresasPorCliente(clienteSistema);
 
-        log.debug("Iniciando acesso ao método de validação de variáveis de chave única para empresa...");
+        log.info("Iniciando acesso ao método de validação de variáveis de chave única para empresa...");
         empresaValidationService.validacaoDeChaveUnicaParaNovaEmpresa(empresaRequest);
 
-        log.debug("Iniciando construção do objeto EmpresaEntity...");
+        log.info("Iniciando construção do objeto EmpresaEntity...");
         EmpresaEntity empresaEntity = new EmpresaEntity().buildFromRequest(clienteSistema, empresaRequest);
-        log.debug("Construção de objeto EmpresaEntity realizado com sucesso");
+        log.info("Construção de objeto EmpresaEntity realizado com sucesso");
 
-        log.debug("Adicionando a empresa à lista de empresas do cliente...");
+        log.info("Adicionando a empresa à lista de empresas do cliente...");
         clienteSistema.addEmpresa(empresaEntity);
         log.info("Empresa adicionada à lista de empresas do cliente com sucesso");
 
-        log.debug("Iniciando acesso ao método de implementação de persistência do cliente sistêmico...");
+        log.info("Iniciando acesso ao método de implementação de persistência do cliente sistêmico...");
         ClienteSistemaEntity clienteSistemaEntity =
                 clienteSistemaRepositoryImpl.implementaPersistencia(clienteSistema);
         log.info("Persistência do cliente sistêmico realizada com sucesso");
 
-        log.debug("Obtendo empresa criada da lista das empresas do cliente persistido...");
+        log.info("Obtendo empresa criada da lista das empresas do cliente persistido...");
         EmpresaEntity empresaCriada = clienteSistemaEntity
                 .obtemEmpresaPorRazaoSocial(empresaRequest.getRazaoSocial());
         log.info("Empresa persistida obtida com sucesso");
 
-        log.debug("Iniciando acesso ao método de criação de novo colaborador admin para empresa...");
+        log.info("Iniciando acesso ao método de criação de novo colaborador admin para empresa...");
         CriacaoColaboradorResponse criacaoColaboradorResponse =
                 colaboradorProxy.realizaCriacaoDeColaboradorNoErp(empresaCriada);
         log.info("Colaborador criado com sucesso para nova empresa");
@@ -93,30 +96,50 @@ public class EmpresaServiceImpl implements EmpresaService {
     }
 
     @Override
+    public EmpresaPageResponse obtemEmpresasClienteSistemico(Pageable pageable,
+                                                             UUID idClienteSistemaSessao,
+                                                             String campoBusca,
+                                                             Boolean somenteEmpresasAtivas) {
+        log.info("Método de serviço de obtenção paginada de empresas acessado");
+
+        log.info("Acessando repositório de busca de empresas...");
+        Page<EmpresaEntity> empresasPage = empresaRepositoryImpl.implementaBuscaPaginadaPorEmpresas(
+                pageable, idClienteSistemaSessao, campoBusca, somenteEmpresasAtivas);
+
+        log.info("Busca de empresas por paginação realizada com sucesso. Acessando método de conversão dos objetos " +
+                "do tipo Entity para objetos do tipo Response...");
+        EmpresaPageResponse empresaPageResponse = new EmpresaPageResponse().buildPageResponse(empresasPage);
+        log.info("Conversão de tipagem realizada com sucesso");
+
+        log.info("A busca paginada de empresas foi realizada com sucesso");
+        return empresaPageResponse;
+    }
+
+    @Override
     @Transactional
     public EmpresaResponse atualizaEmpresa(UUID idClienteSistemaSessao,
                                            UUID uuidEmpresa,
                                            EmpresaRequest empresaRequest) {
 
-        log.debug("Método de serviço de atualização de empresa acessado");
+        log.info("Método de serviço de atualização de empresa acessado");
 
-        log.debug("Iniciando acesso ao método de implementação de busca de empresa por id...");
+        log.info("Iniciando acesso ao método de implementação de busca de empresa por id...");
         EmpresaEntity empresaPreAtualizacao = empresaRepositoryImpl
                 .implementaBuscaPorId(new EmpresaId(idClienteSistemaSessao, uuidEmpresa));
 
-        log.debug("Iniciando validação se empresa a ser alterada foi deletada anteriormente...");
+        log.info("Iniciando validação se empresa a ser alterada foi deletada anteriormente...");
         empresaValidationService.validaSeEmpresaJaEstaExcluida(empresaPreAtualizacao,
                 "A empresa selecionada não pode ser alterada, pois foi excluída");
 
-        log.debug("Iniciando acesso ao método de validação de chaves únicas para a atualização da empresa...");
+        log.info("Iniciando acesso ao método de validação de chaves únicas para a atualização da empresa...");
         empresaValidationService.validacaoDeChaveUnicaParaAtualizacaoDeEmpresa(empresaRequest, empresaPreAtualizacao);
 
-        log.debug("Iniciando setagem de atributos atualizados da empresa...");
+        log.info("Iniciando setagem de atributos atualizados da empresa...");
         EmpresaEntity empresaAtualizada = new EmpresaEntity()
                 .updateFromRequest(empresaPreAtualizacao, empresaRequest);
-        log.debug("Setagem de atributos finalizada com sucesso");
+        log.info("Setagem de atributos finalizada com sucesso");
 
-        log.debug("Iniciando acesso ao método de implementação de persistência de empresa...");
+        log.info("Iniciando acesso ao método de implementação de persistência de empresa...");
         EmpresaEntity empresaPersistida = empresaRepositoryImpl.implementaPersistencia(empresaAtualizada);
         log.info("Empresa atualizada com sucesso");
 
@@ -131,23 +154,23 @@ public class EmpresaServiceImpl implements EmpresaService {
     public EmpresaResponse removeEmpresa(UUID idClienteSistemaSessao,
                                          UUID uuidEmpresa) {
 
-        log.debug("Método de serviço de remoção de empresa acessado");
+        log.info("Método de serviço de remoção de empresa acessado");
 
-        log.debug("Iniciando acesso ao método de implementação de busca de empresa por id...");
+        log.info("Iniciando acesso ao método de implementação de busca de empresa por id...");
         EmpresaEntity empresaEncontrada = empresaRepositoryImpl
                 .implementaBuscaPorId(new EmpresaId(idClienteSistemaSessao, uuidEmpresa));
 
-        log.debug("Iniciando acesso ao método de validação de exclusão de empresa que já foi excluída...");
+        log.info("Iniciando acesso ao método de validação de exclusão de empresa que já foi excluída...");
         empresaValidationService.validaSeEmpresaJaEstaExcluida(
                 empresaEncontrada, "A empresa selecionada já foi excluída");
 
-        log.debug("Atualizando objeto Exclusao da empresa com dados referentes à sua exclusão...");
+        log.info("Atualizando objeto Exclusao da empresa com dados referentes à sua exclusão...");
         ExclusaoEntity exclusaoEntity = new ExclusaoEntity().constroiObjetoExclusao();
 
         empresaEncontrada.setExclusao(exclusaoEntity);
-        log.debug("Objeto Exclusao da empresa de id {} setado com sucesso", uuidEmpresa);
+        log.info("Objeto Exclusao da empresa de id {} setado com sucesso", uuidEmpresa);
 
-        log.debug("Persistindo empresa excluída no banco de dados...");
+        log.info("Persistindo empresa excluída no banco de dados...");
         EmpresaEntity empresaExcluida = empresaRepositoryImpl.implementaPersistencia(empresaEncontrada);
         log.info("Remoção da empresa realizada com sucesso");
 
