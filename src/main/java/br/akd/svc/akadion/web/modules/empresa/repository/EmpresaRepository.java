@@ -2,10 +2,14 @@ package br.akd.svc.akadion.web.modules.empresa.repository;
 
 import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface EmpresaRepository extends JpaRepository<EmpresaEntity, EmpresaId> {
@@ -20,4 +24,15 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, EmpresaI
 
     Optional<EmpresaEntity> findByInscricaoMunicipal(String inscricaoMunicipal);
 
+    //TODO TESTAR QUERY
+    @Query("SELECT e FROM EmpresaEntity e " +
+            "WHERE e.clienteSistema.id = ?1 " +
+            "AND (?2 IS NULL OR (upper(e.nome) LIKE ?2% and (?3 IS NULL OR e.ativa = ?3) " +
+            "OR upper(e.razaoSocial) LIKE ?2% and (?3 IS NULL OR e.ativa = ?3) " +
+            "OR lower(e.email) LIKE ?2% and (?3 IS NULL OR e.ativa = ?3) " +
+            "OR upper(e.cnpj) LIKE ?2% and (?3 IS NULL OR e.ativa = ?3)))")
+    Page<EmpresaEntity> buscaPaginadaPorEmpresas(Pageable pageable,
+                                                 UUID idClienteSistemaSessao,
+                                                 String campoBusca,
+                                                 Boolean somenteEmpresasAtivas);
 }

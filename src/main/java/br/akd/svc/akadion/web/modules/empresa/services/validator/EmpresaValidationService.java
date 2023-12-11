@@ -26,7 +26,6 @@ public class EmpresaValidationService {
 
     public void validacaoDeChaveUnicaParaNovaEmpresa(EmpresaRequest empresaRequest) {
         log.debug("Método de validação de chave única para criação de nova empresa acessado...");
-        //TODO VALIDAR SE OBJECTUTILS FUNCIONAM
         if (ObjectUtils.isEmpty(empresaRequest.getCnpj()))
             validaSeCnpjJaExiste(empresaRequest.getCnpj());
 

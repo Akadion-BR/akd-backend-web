@@ -1,6 +1,7 @@
 package br.akd.svc.akadion.web.modules.cliente.services.crud.impl;
 
 import br.akd.svc.akadion.web.exceptions.InternalErrorException;
+import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
 import br.akd.svc.akadion.web.globals.cpfcnpj.models.CpfRequest;
 import br.akd.svc.akadion.web.globals.cpfcnpj.service.CpfService;
 import br.akd.svc.akadion.web.modules.cliente.models.dto.request.atualizacao.AtualizaClienteSistemaRequest;
@@ -54,6 +55,7 @@ public class ClienteSistemaServiceImpl implements ClienteSistemaService {
     RemocaoPlanoAsaasProxyImpl remocaoPlanoAsaasProxy;
 
     @Override
+    @Transactional
     public ClienteSistemaResponse cadastraNovoCliente(ClienteSistemaRequest clienteSistemaRequest) throws JsonProcessingException {
         log.info("Método de serviço de cadastro de novo cliente acessado");
 
@@ -135,13 +137,19 @@ public class ClienteSistemaServiceImpl implements ClienteSistemaService {
     public void realizaValidacaoCpf(CpfRequest cpfRequest) {
         log.info("Método responsável por implementar a lógica de validação de CPF acessado");
 
-        log.info("Iniciando validação dos dígitos verificadores do CPF...");
-        cpfService.realizaValidacaoCpf(cpfRequest.getCpf());
-        log.info("Validação dos dígitos verificadores do CPF realizada com sucesso");
+        try {
+            log.info("Iniciando validação dos dígitos verificadores do CPF...");
+            cpfService.realizaValidacaoCpf(cpfRequest.getCpf());
+            log.info("Validação dos dígitos verificadores do CPF realizada com sucesso");
 
-        log.info("Iniciando acesso ao método de validação se CPF já existe...");
-        clienteSistemaValidationService.validaSeCpfJaExiste(cpfRequest.getCpf());
-        log.info("Validação de duplicidade de CPF realizada com sucesso");
+            log.info("Iniciando acesso ao método de validação se CPF já existe...");
+            clienteSistemaValidationService.validaSeCpfJaExiste(cpfRequest.getCpf());
+            log.info("Validação de duplicidade de CPF realizada com sucesso");
+        } catch (InvalidRequestException invalidRequestException) {
+            throw new InvalidRequestException(invalidRequestException.getMessage());
+        } catch (Exception exception) {
+            throw new InternalErrorException(Constantes.ERRO_INTERNO);
+        }
     }
 
     @Override

@@ -5,8 +5,11 @@ import br.akd.svc.akadion.web.globals.imagem.response.ImagemResponse;
 import br.akd.svc.akadion.web.globals.telefone.response.TelefoneResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.response.ConfigFiscalEmpresaResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
+import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.dto.response.ChamadoResponse;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -33,7 +36,7 @@ public class EmpresaResponse {
     private TelefoneResponse telefone;
     private EnderecoResponse endereco;
     private ConfigFiscalEmpresaResponse configFiscalEmpresa;
-//    private List<ChamadoResponse> chamados = new ArrayList<>();     //TODO AJUSTAR - INTEGRAÇÃO DE MS
+    private List<ChamadoResponse> chamados = new ArrayList<>();
 
     public EmpresaResponse buildFromEntity(EmpresaEntity empresaEntity) {
         return empresaEntity != null
@@ -59,8 +62,8 @@ public class EmpresaResponse {
                         .buildFromEntity(empresaEntity.getEndereco()))
                 .configFiscalEmpresa(new ConfigFiscalEmpresaResponse()
                         .buildFromEntity(empresaEntity.getConfigFiscalEmpresa()))
-//                .chamados(new ChamadoResponse()     //TODO AJUSTAR - INTEGRAÇÃO DE MS
-//                        .buildListFromEntity(empresaEntity.getChamados()))
+                .chamados(new ChamadoResponse()
+                        .buildListFromEntity(empresaEntity.getChamados()))
                 .build()
                 : null;
     }

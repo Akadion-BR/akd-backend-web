@@ -1,5 +1,6 @@
 package br.akd.svc.akadion.web.modules.empresa.models.dto.response;
 
+import br.akd.svc.akadion.web.modules.external.erp.colaborador.CriacaoColaboradorResponse;
 import lombok.*;
 
 import java.util.UUID;
@@ -11,6 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CriaEmpresaResponse {
     private UUID uuidClienteResponsavelEmpresa;
-    //    private ColaboradorResponse colaboradorCriado;     //TODO AJUSTAR - INTEGRAÇÃO DE MS
+    private CriacaoColaboradorResponse colaboradorCriado;
     private EmpresaResponse empresaCriada;
 }
