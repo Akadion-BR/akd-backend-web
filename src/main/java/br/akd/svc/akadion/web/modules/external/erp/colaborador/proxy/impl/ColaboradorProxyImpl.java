@@ -1,4 +1,4 @@
-package br.akd.svc.akadion.web.modules.external.erp.proxy.impl;
+package br.akd.svc.akadion.web.modules.external.erp.colaborador.proxy.impl;
 
 import br.akd.svc.akadion.web.exceptions.InternalErrorException;
 import br.akd.svc.akadion.web.globals.proxy.ProxyUtils;
@@ -6,7 +6,7 @@ import br.akd.svc.akadion.web.globals.proxy.enums.ProxyModuleEnum;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyOperationEnum;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
 import br.akd.svc.akadion.web.modules.external.erp.colaborador.CriacaoColaboradorResponse;
-import br.akd.svc.akadion.web.modules.external.erp.proxy.ColaboradorProxy;
+import br.akd.svc.akadion.web.modules.external.erp.colaborador.proxy.ColaboradorProxy;
 import br.akd.svc.akadion.web.utils.Constantes;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
