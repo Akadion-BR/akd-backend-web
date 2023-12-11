@@ -15,10 +15,11 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class ClienteSistemaRequest {
 
-    @Pattern(regexp = "([0-2]\\d|3[0-1])/(0\\d|1[0-2])/((19|20)\\d\\d)",
+    @Pattern(regexp = "((19|20)\\d\\d)-(0\\d|1[0-2])-([0-2]\\d|3[0-1])",
             message = "A data de nascimento informada é inválida")
     private String dataNascimento;
 
+    @NotEmpty(message = "O campo e-mail não pode estar vazio")
     @Email(message = "O e-mail informado é inválido")
     @Size(max = 70, message = "O campo e-mail deve conter no máximo {max} caracteres")
     private String email;

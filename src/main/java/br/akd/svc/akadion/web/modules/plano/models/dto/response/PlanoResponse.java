@@ -17,9 +17,9 @@ public class PlanoResponse {
     private String horaContratacao;
     private String dataVencimento;
     private String dataAgendamentoRemocao;
-    private String tipoPlanoEnum;
-    private String statusPlanoEnum;
-    private String formaPagamentoSistemaEnum;
+    private String tipoPlano;
+    private String statusPlano;
+    private String formaPagamentoSistema;
 
     public PlanoResponse buildFromEntity(PlanoEntity planoEntity) {
         return planoEntity != null
@@ -29,9 +29,9 @@ public class PlanoResponse {
                 .horaContratacao(planoEntity.getHoraContratacao())
                 .dataVencimento(planoEntity.getDataVencimento())
                 .dataAgendamentoRemocao(planoEntity.getDataAgendamentoRemocao())
-                .tipoPlanoEnum(planoEntity.getTipoPlanoEnum().getDesc())
-                .statusPlanoEnum(planoEntity.getStatusPlanoEnum().getDesc())
-                .formaPagamentoSistemaEnum(planoEntity.getFormaPagamentoSistemaEnum().getDesc())
+                .tipoPlano(planoEntity.getTipoPlanoEnum().getDesc())
+                .statusPlano(planoEntity.getStatusPlanoEnum().getDesc())
+                .formaPagamentoSistema(planoEntity.getFormaPagamentoSistemaEnum().getDesc())
                 .build()
                 : null;
     }

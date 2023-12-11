@@ -1,6 +1,7 @@
 package br.akd.svc.akadion.web.globals.telefone.response;
 
 import br.akd.svc.akadion.web.globals.telefone.entity.TelefoneEntity;
+import br.akd.svc.akadion.web.globals.telefone.enums.TipoTelefoneEnum;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,7 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 public class TelefoneResponse {
     private Integer prefixo;
-    private Integer numero;
+    private String numero;
+    private TipoTelefoneEnum tipoTelefone;
 
     public TelefoneResponse buildFromEntity(TelefoneEntity telefoneEntity) {
         log.info("Método de conversão de objeto do tipo TelefoneEntity para objeto do tipo TelefoneResponse acessado");
@@ -23,6 +25,7 @@ public class TelefoneResponse {
                 ? TelefoneResponse.builder()
                 .prefixo(telefoneEntity.getPrefixo())
                 .numero(telefoneEntity.getNumero())
+                .tipoTelefone(telefoneEntity.getTipoTelefone())
                 .build()
                 : null;
 

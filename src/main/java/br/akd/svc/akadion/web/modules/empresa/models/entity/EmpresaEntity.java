@@ -4,12 +4,14 @@ import br.akd.svc.akadion.web.globals.endereco.entity.EnderecoEntity;
 import br.akd.svc.akadion.web.globals.exclusao.entity.ExclusaoEntity;
 import br.akd.svc.akadion.web.globals.imagem.entity.ImagemEntity;
 import br.akd.svc.akadion.web.globals.telefone.entity.TelefoneEntity;
+import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.entity.ChamadoEntity;
 import br.akd.svc.akadion.web.modules.cliente.models.entity.ClienteSistemaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.ConfigFiscalEmpresaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.empresa.models.enums.SegmentoEmpresaEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
@@ -18,6 +20,8 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -159,14 +163,13 @@ public class EmpresaEntity {
             fetch = FetchType.LAZY)
     private ConfigFiscalEmpresaEntity configFiscalEmpresa;
 
-    //TODO AJUSTAR - INTEGRAÇÃO DE MS
-//    @JsonIgnore
-//    @Builder.Default
-//    @ToString.Exclude
-//    @Comment("Chamados de suporte técnico da empresa")
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//    @OneToMany(targetEntity = ChamadoEntity.class, orphanRemoval = true, cascade = CascadeType.ALL)
-//    private List<ChamadoEntity> chamados = new ArrayList<>();
+    @JsonIgnore
+    @Builder.Default
+    @ToString.Exclude
+    @Comment("Chamados de suporte técnico da empresa")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(targetEntity = ChamadoEntity.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<ChamadoEntity> chamados = new ArrayList<>();
 
     public EmpresaEntity buildFromRequest(ClienteSistemaEntity clienteSistema,
                                           EmpresaRequest empresaRequest) {
@@ -191,7 +194,7 @@ public class EmpresaEntity {
                 .endereco(new EnderecoEntity()
                         .buildFromRequest(empresaRequest.getEndereco()))
                 .configFiscalEmpresa(null)
-//                .chamados(new ArrayList<>())     //TODO AJUSTAR - INTEGRAÇÃO DE MS
+                .chamados(new ArrayList<>())
                 .build();
     }
 
@@ -219,7 +222,7 @@ public class EmpresaEntity {
                 .endereco(new EnderecoEntity()
                         .buildFromRequest(empresaRequest.getEndereco()))
                 .configFiscalEmpresa(empresaPreAtualizacao.getConfigFiscalEmpresa())
-//                .chamados(new ArrayList<>())     //TODO AJUSTAR - INTEGRAÇÃO DE MS
+                .chamados(new ArrayList<>())
                 .build();
     }
 }

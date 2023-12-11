@@ -3,6 +3,7 @@ package br.akd.svc.akadion.web.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,17 +25,19 @@ import java.util.Arrays;
         jsr250Enabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    //TODO TRATAR PUBLIC MATCHERS
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
-            "/api/site/**",
             "/hook/v1/**",
-            "/swagger-ui.html/**",
+            "/swagger-ui.html",
             "/v2/api-docs"};
 
     @Autowired
-    private Environment env;
+    Environment env;
     @Autowired
-    private UserDetailsService userDetailsService;
+    JWTUtil jwtUtil;
+    @Autowired
+    UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -43,7 +46,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
         http.cors().and().csrf().disable();
-        http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/site/v1/cliente-sistema").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/site/v1/cliente-sistema/verifica-cpf").permitAll()
+                .antMatchers(PUBLIC_MATCHERS).permitAll()
+                .anyRequest()
+                .authenticated();
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

@@ -25,7 +25,6 @@ public class ClienteSistemaResponse {
     private String dataNascimento;
     private String email;
     private String nome;
-    private String senha;
     private String cpf;
     private Double saldo;
     private PlanoResponse plano;

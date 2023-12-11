@@ -15,6 +15,7 @@ import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -81,7 +82,7 @@ public class ClienteSistemaEntity {
 
     @JsonIgnore
     @Comment("Senha de acesso ao sistema do cliente sistêmico")
-    @Column(name = "STR_SENHA_CLS", nullable = false, length = 25)
+    @Column(name = "STR_SENHA_CLS", nullable = false, length = 72)
     private String senha;
 
     @JsonIgnore
@@ -98,7 +99,7 @@ public class ClienteSistemaEntity {
     @JsonIgnore
     @ToString.Exclude
     @Comment("Código de exclusão do cliente sistêmico")
-    @OneToOne(targetEntity = PlanoEntity.class,
+    @OneToOne(targetEntity = ExclusaoEntity.class,
             orphanRemoval = true,
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
@@ -136,7 +137,7 @@ public class ClienteSistemaEntity {
     @Builder.Default
     @Comment("Lista de pagamentos realizados pelo sistêmico")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToMany(targetEntity = EmpresaEntity.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = PagamentoSistemaEntity.class, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<PagamentoSistemaEntity> pagamentos = new ArrayList<>();
 
     @JsonIgnore
@@ -166,9 +167,9 @@ public class ClienteSistemaEntity {
                 .dataCadastro(LocalDate.now().toString())
                 .horaCadastro(LocalTime.now().toString())
                 .dataNascimento(clienteSistemaRequest.getDataNascimento())
-                .email(clienteSistemaRequest.getEmail())
-                .nome(clienteSistemaRequest.getNome())
-                .senha(clienteSistemaRequest.getSenha())
+                .email(clienteSistemaRequest.getEmail().toLowerCase())
+                .nome(clienteSistemaRequest.getNome().toUpperCase())
+                .senha(new BCryptPasswordEncoder().encode(clienteSistemaRequest.getSenha()))
                 .cpf(clienteSistemaRequest.getCpf())
                 .saldo(0.00)
                 .exclusao(null)
@@ -190,8 +191,8 @@ public class ClienteSistemaEntity {
                 .dataCadastro(clientePreAtualizacao.getDataCadastro())
                 .horaCadastro(clientePreAtualizacao.getHoraCadastro())
                 .dataNascimento(atualizaClienteSistemaRequest.getDataNascimento())
-                .email(atualizaClienteSistemaRequest.getEmail())
-                .nome(atualizaClienteSistemaRequest.getNome())
+                .email(atualizaClienteSistemaRequest.getEmail().toLowerCase())
+                .nome(atualizaClienteSistemaRequest.getNome().toUpperCase())
                 .senha(atualizaClienteSistemaRequest.getSenha())
                 .cpf(atualizaClienteSistemaRequest.getCpf())
                 .saldo(clientePreAtualizacao.getSaldo())
