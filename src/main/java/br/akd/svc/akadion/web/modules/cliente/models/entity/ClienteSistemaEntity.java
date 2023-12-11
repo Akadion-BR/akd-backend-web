@@ -99,7 +99,7 @@ public class ClienteSistemaEntity {
     @JsonIgnore
     @ToString.Exclude
     @Comment("Código de exclusão do cliente sistêmico")
-    @OneToOne(targetEntity = PlanoEntity.class,
+    @OneToOne(targetEntity = ExclusaoEntity.class,
             orphanRemoval = true,
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
@@ -137,7 +137,7 @@ public class ClienteSistemaEntity {
     @Builder.Default
     @Comment("Lista de pagamentos realizados pelo sistêmico")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToMany(targetEntity = EmpresaEntity.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = PagamentoSistemaEntity.class, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<PagamentoSistemaEntity> pagamentos = new ArrayList<>();
 
     @JsonIgnore
