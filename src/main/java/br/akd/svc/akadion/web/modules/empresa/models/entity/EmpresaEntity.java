@@ -4,11 +4,12 @@ import br.akd.svc.akadion.web.globals.endereco.entity.EnderecoEntity;
 import br.akd.svc.akadion.web.globals.exclusao.entity.ExclusaoEntity;
 import br.akd.svc.akadion.web.globals.imagem.entity.ImagemEntity;
 import br.akd.svc.akadion.web.globals.telefone.entity.TelefoneEntity;
+import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.entity.ChamadoEntity;
 import br.akd.svc.akadion.web.modules.cliente.models.entity.ClienteSistemaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.ConfigFiscalEmpresaEntity;
+import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.empresa.models.enums.SegmentoEmpresaEnum;
-import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.entity.ChamadoEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -30,6 +31,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(EmpresaId.class)
 @Table(name = "TB_AKD_EMPRESA",
         uniqueConstraints = {
                 @UniqueConstraint(name = "UK_RAZAOSOCIAL_EMPRESA", columnNames = {"STR_RAZAOSOCIAL_EMP"}),
@@ -46,6 +48,14 @@ public class EmpresaEntity {
     @Column(name = "COD_EMPRESA_EMP", nullable = false, updatable = false)
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
+
+    @Id
+    @JsonIgnore
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Comment("Chave primária da empresa - ID da empresa ao qual o cliente faz parte")
+    @JoinColumn(name = "COD_CLIENTESISTEMA_EMP", referencedColumnName = "COD_CLIENTESISTEMA_CLS", nullable = false, updatable = false)
+    private ClienteSistemaEntity clienteSistema;
 
     @JsonIgnore
     @Comment("Data em que o cadastro da empresa foi realizado")
@@ -164,6 +174,7 @@ public class EmpresaEntity {
     public EmpresaEntity buildFromRequest(ClienteSistemaEntity clienteSistema,
                                           EmpresaRequest empresaRequest) {
         return EmpresaEntity.builder()
+                .clienteSistema(clienteSistema)
                 .dataCadastro(LocalDate.now().toString())
                 .horaCadastro(LocalTime.now().toString())
                 .nome(empresaRequest.getNome())
@@ -191,6 +202,7 @@ public class EmpresaEntity {
                                            EmpresaRequest empresaRequest) {
         return EmpresaEntity.builder()
                 .id(empresaPreAtualizacao.getId())
+                .clienteSistema(empresaPreAtualizacao.getClienteSistema())
                 .dataCadastro(empresaPreAtualizacao.getDataCadastro())
                 .horaCadastro(empresaPreAtualizacao.getHoraCadastro())
                 .nome(empresaRequest.getNome())
