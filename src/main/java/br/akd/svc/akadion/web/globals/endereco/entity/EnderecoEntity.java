@@ -45,7 +45,7 @@ public class EnderecoEntity {
     private String codigoPostal;
 
     @Comment("Cidade do ENDEREÇO")
-    @Column(name = "str_cidade_end", nullable = false, length = 80)
+    @Column(name = "STR_CIDADE_END", nullable = false, length = 80)
     private String cidade;
 
     @Comment("Complemento do endereço")
