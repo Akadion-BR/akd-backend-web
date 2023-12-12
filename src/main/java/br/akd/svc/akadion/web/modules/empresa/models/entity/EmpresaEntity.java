@@ -10,6 +10,7 @@ import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.ConfigFiscalE
 import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.empresa.models.enums.SegmentoEmpresaEnum;
 import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.entity.ChamadoEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -103,6 +104,7 @@ public class EmpresaEntity {
     @Column(name = "ENM_SEGMENTOEMPRESA_EMP", nullable = false)
     private SegmentoEmpresaEnum segmentoEmpresaEnum;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código de exclusão da empresa")
     @OneToOne(targetEntity = ExclusaoEntity.class,
@@ -111,6 +113,7 @@ public class EmpresaEntity {
             fetch = FetchType.LAZY)
     private ExclusaoEntity exclusao;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código da imagem de perfil da empresa")
     @OneToOne(targetEntity = ImagemEntity.class,
@@ -119,6 +122,7 @@ public class EmpresaEntity {
             fetch = FetchType.LAZY)
     private ImagemEntity logo;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código do telefone da empresa")
     @OneToOne(targetEntity = TelefoneEntity.class,
@@ -127,6 +131,7 @@ public class EmpresaEntity {
             fetch = FetchType.LAZY)
     private TelefoneEntity telefone;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código do endereço da empresa")
     @OneToOne(targetEntity = EnderecoEntity.class,
@@ -135,6 +140,7 @@ public class EmpresaEntity {
             fetch = FetchType.LAZY)
     private EnderecoEntity endereco;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código da configuração fiscal da empresa")
     @OneToOne(targetEntity = ConfigFiscalEmpresaEntity.class,
@@ -143,6 +149,7 @@ public class EmpresaEntity {
             fetch = FetchType.LAZY)
     private ConfigFiscalEmpresaEntity configFiscalEmpresa;
 
+    @JsonIgnore
     @Builder.Default
     @ToString.Exclude
     @Comment("Chamados de suporte técnico da empresa")

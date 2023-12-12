@@ -86,6 +86,7 @@ public class ClienteSistemaEntity {
     @Column(name = "DBL_SALDO_CLS", nullable = false, scale = 2)
     private Double saldo = 0.0;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código de exclusão do cliente sistêmico")
     @OneToOne(targetEntity = ExclusaoEntity.class,
@@ -94,6 +95,7 @@ public class ClienteSistemaEntity {
             fetch = FetchType.LAZY)
     private ExclusaoEntity exclusao;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código do plano do cliente sistêmico")
     @OneToOne(targetEntity = PlanoEntity.class,
@@ -102,6 +104,7 @@ public class ClienteSistemaEntity {
             fetch = FetchType.LAZY)
     private PlanoEntity plano;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código do telefone da do cliente sistêmico")
     @OneToOne(targetEntity = TelefoneEntity.class,
@@ -110,6 +113,7 @@ public class ClienteSistemaEntity {
             fetch = FetchType.LAZY)
     private TelefoneEntity telefone;
 
+    @JsonIgnore
     @ToString.Exclude
     @Comment("Código do endereço do cliente sistêmico")
     @OneToOne(targetEntity = EnderecoEntity.class,
@@ -118,6 +122,7 @@ public class ClienteSistemaEntity {
             fetch = FetchType.LAZY)
     private EnderecoEntity endereco;
 
+    @JsonIgnore
     @ToString.Exclude
     @Builder.Default
     @Comment("Lista de pagamentos realizados pelo sistêmico")
@@ -125,6 +130,7 @@ public class ClienteSistemaEntity {
     @OneToMany(targetEntity = PagamentoSistemaEntity.class, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<PagamentoSistemaEntity> pagamentos = new ArrayList<>();
 
+    @JsonIgnore
     @ToString.Exclude
     @Builder.Default
     @Comment("Lista de empresas do cliente sistêmico")
