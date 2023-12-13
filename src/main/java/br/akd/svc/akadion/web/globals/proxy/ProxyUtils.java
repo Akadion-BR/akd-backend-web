@@ -26,7 +26,7 @@ public class ProxyUtils {
             throw new InternalErrorException(Constantes.ERRO_INTERNO);
         }
 
-        if (responseEntity.getStatusCodeValue() != 200) {
+        if (!responseEntity.getStatusCode().is2xxSuccessful()) {
             log.error("Ocorreu um erro de status de resposta no processo de [{}] do(a) [{}] no ERP. " +
                             "Corpo da requisição: {}",
                     proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc(), responseEntity.getBody());
