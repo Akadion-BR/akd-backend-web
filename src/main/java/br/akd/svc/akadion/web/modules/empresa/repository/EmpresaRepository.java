@@ -24,7 +24,6 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, EmpresaI
 
     Optional<EmpresaEntity> findByInscricaoMunicipal(String inscricaoMunicipal);
 
-    //TODO TESTAR QUERY
     @Query("SELECT e FROM EmpresaEntity e " +
             "WHERE e.clienteSistema.id = ?1 " +
             "AND (?2 IS NULL OR (upper(e.nome) LIKE ?2% and (?3 IS NULL OR e.ativa = ?3) " +

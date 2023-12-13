@@ -8,9 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NfeConfigRequest {
-
-    //TODO JAVAX VALIDATOR
-
     private Long proximoNumeroProducao;
     private Long proximoNumeroHomologacao;
     private Integer serieProducao;

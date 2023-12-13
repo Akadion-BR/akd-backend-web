@@ -24,8 +24,6 @@ import java.util.UUID;
 @Table(name = "TB_AKD_CFGFISCAL")
 public class ConfigFiscalEmpresaEntity {
 
-    //TODO ADICIONAR VALIDAÇÕES DE DADOS CADASTRADOS DA EMPRESA PRA TIPOS DE NF HABILITADOS. POR EX: NFSE NÃO EXIGE IE CADASTRADA, AGORA NFE E NFCE EXIGEM
-
     @Id
     @Type(type = "uuid-char")
     @GeneratedValue(generator = "UUID")

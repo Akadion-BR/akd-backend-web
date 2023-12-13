@@ -31,14 +31,6 @@ public class AtrasoPagamentoWebhookService {
         atrasoPagamentoWebhookUtil.realizaAtualizacaoNoObjetoPagamentoParaAtraso(pagamentoEntity);
 
         log.info("Iniciando persistência do pagamento atualizado...");
-        PagamentoSistemaEntity pagamentoAtualizado = pagamentoRepositoryImpl.implementaPersistencia(pagamentoEntity);
-
-        //TODO IMPLEMENTAR LÓGICA PARA ATRASO E CANCELAMENTO NOS PAGAMENTOS DO SISTEMA
-        // QUANTOS DIAS PARA CANCELAR? ETC...
-
-        //TODO IMPLEMENTAR SERVIÇO DE ENVIO DE E-MAILS
-//        log.info("Iniciando acesso ao método assíncrono de envio de e-mails...");
-//        atrasoPagamentoWebhookUtil.realizaAcionamentoDoServicoDeEnvioDeEmails(pagamentoAtualizado);
 
         log.info("Lógica de atualização de status do pagamento para ATRASADO finalizada com sucesso");
     }
