@@ -31,7 +31,6 @@ public class PagamentoWebhookController {
     @Autowired
     PagamentoWebhookService pagamentoWebhookService;
 
-    //TODO IMPLEMENTAR FILTRO DO SPRING BOOT
     @PostMapping
     @Tag(name = "Recebimento de atualização de status de pagamento")
     @Operation(summary = "Esse endpoint tem como objetivo receber atualizações no status dos pagamentos das " +

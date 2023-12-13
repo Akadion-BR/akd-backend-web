@@ -4,12 +4,12 @@ import br.akd.svc.akadion.web.globals.endereco.entity.EnderecoEntity;
 import br.akd.svc.akadion.web.globals.exclusao.entity.ExclusaoEntity;
 import br.akd.svc.akadion.web.globals.imagem.entity.ImagemEntity;
 import br.akd.svc.akadion.web.globals.telefone.entity.TelefoneEntity;
-import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.entity.ChamadoEntity;
 import br.akd.svc.akadion.web.modules.cliente.models.entity.ClienteSistemaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.ConfigFiscalEmpresaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.empresa.models.enums.SegmentoEmpresaEnum;
+import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.entity.ChamadoEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -41,7 +41,6 @@ import java.util.UUID;
 public class EmpresaEntity {
 
     @Id
-    @JsonIgnore
     @Type(type = "uuid-char")
     @GeneratedValue(generator = "UUID")
     @Comment("Chave primária da empresa - UUID")
@@ -50,69 +49,56 @@ public class EmpresaEntity {
     private UUID id;
 
     @Id
-    @JsonIgnore
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @Comment("Chave primária da empresa - ID da empresa ao qual o cliente faz parte")
     @JoinColumn(name = "COD_CLIENTESISTEMA_EMP", referencedColumnName = "COD_CLIENTESISTEMA_CLS", nullable = false, updatable = false)
     private ClienteSistemaEntity clienteSistema;
 
-    @JsonIgnore
     @Comment("Data em que o cadastro da empresa foi realizado")
     @Column(name = "DT_DATACADASTRO_EMP", nullable = false, updatable = false, length = 10)
     private String dataCadastro;
 
-    @JsonIgnore
     @Comment("Hora em que o cadastro da empresa foi realizado")
     @Column(name = "HR_HORACADASTRO_EMP", nullable = false, updatable = false, length = 18)
     private String horaCadastro;
 
-    @JsonIgnore
     @Comment("Nome da empresa")
     @Column(name = "STR_NOME_EMP", nullable = false, length = 70)
     private String nome;
 
-    @JsonIgnore
     @Comment("Razão social da empresa")
     @Column(name = "STR_RAZAOSOCIAL_EMP", nullable = false, updatable = false, length = 70)
     private String razaoSocial;
 
-    @JsonIgnore
     @Comment("CNPJ da empresa")
     @Column(name = "STR_CNPJ_EMP", nullable = false, updatable = false, length = 18)
     private String cnpj;
 
-    @JsonIgnore
     @Comment("Endpoint da empresa")
     @Column(name = "STR_ENDPOINT_EMP", nullable = false, length = 30)
     private String endpoint;
 
-    @JsonIgnore
     @Comment("E-mail da empresa")
     @Column(name = "EML_EMAIL_EMP", nullable = false, length = 70)
     private String email;
 
-    @JsonIgnore
     @Comment("Nome fantasia da empresa")
     @Column(name = "STR_NOMEFANTASIA_EMP", nullable = false, length = 70)
     private String nomeFantasia;
 
-    @JsonIgnore
     @Comment("Inscrição estadual da empresa")
     @Column(name = "STR_INSCRICAOESTADUAL_EMP", length = 12)
     private String inscricaoEstadual;
 
-    @JsonIgnore
     @Comment("Inscrição municipal da empresa")
     @Column(name = "STR_INSCRICAOMUNICIPAL_EMP", length = 12)
     private String inscricaoMunicipal;
 
-    @JsonIgnore
     @Comment("Empresa está ativa")
     @Column(name = "BOL_ATIVA_EMP")
     private Boolean ativa;
 
-    @JsonIgnore
     @Enumerated(EnumType.STRING)
     @Comment("Tipo de segmento da empresa: 0 - Baterias automotivas")
     @Column(name = "ENM_SEGMENTOEMPRESA_EMP", nullable = false)

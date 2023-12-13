@@ -177,13 +177,13 @@ public class EmailServiceImpl implements EmailService {
     @Async
     @Override
     public void enviarEmailVencimentoProximo(ClienteSistemaEntity clienteSistema) {
-        //TODO IMPLEMENTAR MÉTODO
+
     }
 
     @Async
     @Override
     public void enviarEmailAssinaturaEncerrada(ClienteSistemaEntity clienteSistema) {
-        //TODO IMPLEMENTAR MÉTODO
+
     }
 
 }

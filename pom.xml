@@ -87,7 +87,6 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
-		<!-- TODO IMPLEMENTAR SPRING SECURITY -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>

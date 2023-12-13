@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class CriacaoPagamentoWebhookService {
 
     public void realizaCriacaoDeNovoPagamento(PagamentoWebHookRequest pagamentoWebHookRequest) {
-        //TODO IMPLEMENTAR LÓGICA DE CRIAÇÃO DE NOVO PAGAMENTO COM SERVIÇO DE E-MAILS
+
     }
 
 }

@@ -1,6 +1,5 @@
 package br.akd.svc.akadion.web.modules.empresa.controller;
 
-import br.akd.svc.akadion.web.config.UserSS;
 import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
 import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
 import br.akd.svc.akadion.web.exceptions.UnauthorizedAccessException;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
@@ -41,11 +39,11 @@ public class EmpresaController {
     EmpresaService empresaService;
 
     /**
-     * Cadastro de novo cliente
-     * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de criação de novo cliente
+     * Cadastro de nova empresa
+     * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de criação de nova empresa
      *
-     * @param userDetails    Dados do cliente sistêmico logado na sessão atual
-     * @param empresaRequest Objeto contendo todos os atributos necessários para a criação de uma nova empresa
+     * @param idClienteSessao Dados do cliente sistêmico logado na sessão atual
+     * @param empresaRequest  Objeto contendo todos os atributos necessários para a criação de uma nova empresa
      * @return Retorna objeto Empresa criada convertida para o tipo CriaEmpresaResponse
      * @throws InvalidRequestException Exception lançada caso ocorra alguma falha interna na criação da empresa
      */
@@ -67,13 +65,13 @@ public class EmpresaController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = UnauthorizedAccessException.class))})
     })
-    public ResponseEntity<CriaEmpresaResponse> criaEmpresa(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<CriaEmpresaResponse> criaEmpresa(@AuthenticationPrincipal UUID idClienteSessao,
                                                            @RequestBody EmpresaRequest empresaRequest) {
         log.info("Método controlador de criação de nova empresa acessado");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(empresaService.criaNovaEmpresa(
-                        ((UserSS) userDetails).getClienteId(),
+                        idClienteSessao,
                         empresaRequest));
     }
 
@@ -81,10 +79,10 @@ public class EmpresaController {
      * Busca paginada de empresas
      * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de busca paginada de empresas
      *
-     * @param userDetails    Dados do usuário logado na sessão atual
-     * @param campoBusca     Parâmetro opcional. Recebe uma string para busca de empresas por atributos específicos
-     * @param empresasAtivas Parâmetro opcional. Recebe uma string para busca de empresas ativas ou inativas
-     * @param pageable       Contém especificações da paginação, como tamanho da página, página atual, etc
+     * @param idClienteSessao Dados do usuário logado na sessão atual
+     * @param campoBusca      Parâmetro opcional. Recebe uma string para busca de empresas por atributos específicos
+     * @param empresasAtivas  Parâmetro opcional. Recebe uma string para busca de empresas ativas ou inativas
+     * @param pageable        Contém especificações da paginação, como tamanho da página, página atual, etc
      * @return Retorna objeto do tipo EmpresaPageResponse, que possui informações da paginação e a lista de empresas
      * encontrados inserida em seu body
      */
@@ -99,7 +97,7 @@ public class EmpresaController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = EmpresaPageResponse.class))}),
     })
-    public ResponseEntity<EmpresaPageResponse> obtemEmpresasPaginadas(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<EmpresaPageResponse> obtemEmpresasPaginadas(@AuthenticationPrincipal UUID idClienteSessao,
                                                                       @RequestParam(value = "busca", required = false) String campoBusca,
                                                                       @RequestParam(value = "ativas", required = false) Boolean empresasAtivas,
                                                                       Pageable pageable) {
@@ -107,7 +105,7 @@ public class EmpresaController {
         return ResponseEntity.ok().body(
                 empresaService.obtemEmpresasClienteSistemico(
                         pageable,
-                        ((UserSS) userDetails).getClienteId(),
+                        idClienteSessao,
                         campoBusca,
                         empresasAtivas));
     }
@@ -116,9 +114,9 @@ public class EmpresaController {
      * Atualiza empresa
      * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de atualização de empresa por id
      *
-     * @param userDetails    Dados do cliente sistêmico logado na sessão atual
-     * @param idEmpresa      Id da empresa a ser atualizada
-     * @param empresaRequest objeto que deve conter todos os dados necessários para atualização da empresa
+     * @param idClienteSessao Dados do cliente sistêmico logado na sessão atual
+     * @param idEmpresa       Id da empresa a ser atualizada
+     * @param empresaRequest  objeto que deve conter todos os dados necessários para atualização da empresa
      * @return Retorna objeto Empresa encontrada convertida para o tipo EmpresaResponse
      */
     @PutMapping("/{idEmpresa}")
@@ -136,13 +134,13 @@ public class EmpresaController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = UnauthorizedAccessException.class))}),
     })
-    public ResponseEntity<EmpresaResponse> atualizaEmpresa(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<EmpresaResponse> atualizaEmpresa(@AuthenticationPrincipal UUID idClienteSessao,
                                                            @PathVariable UUID idEmpresa,
                                                            @RequestBody EmpresaRequest empresaRequest) {
         log.info("Método controlador de atualização de empresa acessado");
         return ResponseEntity.ok().body(
                 empresaService.atualizaEmpresa(
-                        ((UserSS) userDetails).getClienteId(),
+                        idClienteSessao,
                         idEmpresa,
                         empresaRequest));
     }
@@ -151,8 +149,8 @@ public class EmpresaController {
      * Exclusão de empresa
      * Este método tem como objetivo disponibilizar o endpoint de acionamento da lógica de exclusão de empresa por id
      *
-     * @param userDetails Dados do cliente sistêmico logado na sessão atual
-     * @param idEmpresa   Id da empresa a ser removida
+     * @param idClienteSessao Dados do cliente sistêmico logado na sessão atual
+     * @param idEmpresa       Id da empresa a ser removida
      * @return Retorna objeto Empresa removida convertida para o tipo EmpresaResponse
      */
     @DeleteMapping("/{idEmpresa}")
@@ -178,12 +176,12 @@ public class EmpresaController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = InvalidRequestException.class))}),
     })
-    public ResponseEntity<EmpresaResponse> removeEmpresa(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<EmpresaResponse> removeEmpresa(@AuthenticationPrincipal UUID idClienteSessao,
                                                          @PathVariable UUID idEmpresa) {
         log.info("Método controlador de remoção de empresa acessado");
         return ResponseEntity.ok().body(
                 empresaService.removeEmpresa(
-                        ((UserSS) userDetails).getClienteId(),
+                        idClienteSessao,
                         idEmpresa));
     }
 
