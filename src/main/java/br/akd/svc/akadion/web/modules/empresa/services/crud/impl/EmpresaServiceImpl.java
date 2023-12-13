@@ -49,7 +49,7 @@ public class EmpresaServiceImpl implements EmpresaService {
                                                EmpresaRequest empresaRequest) {
 
         log.info("Método de serviço responsável pelo tratamento do objeto recebido e criação de nova empresa acessado");
-        log.info("EmpresaRequest recebido: {} | Id do cliente sistêmico: {}", empresaRequest, idClienteSistemaSessao);
+        log.debug("EmpresaRequest recebido: {} | Id do cliente sistêmico: {}", empresaRequest, idClienteSistemaSessao);
 
         log.info("Iniciando acesso ao método de implementação de busca de cliente por id...");
         ClienteSistemaEntity clienteSistema = clienteSistemaRepositoryImpl
@@ -81,7 +81,7 @@ public class EmpresaServiceImpl implements EmpresaService {
 
         log.info("Iniciando acesso ao método de criação de novo colaborador admin para empresa...");
         CriacaoColaboradorResponse criacaoColaboradorResponse =
-                colaboradorProxy.realizaCriacaoDeColaboradorNoErp(empresaCriada);
+                colaboradorProxy.realizaCriacaoDeColaboradorNoErp(new EmpresaId(empresaCriada.getClienteSistema().getId(), empresaCriada.getId()));
         log.info("Colaborador criado com sucesso para nova empresa");
 
         log.info("Iniciando objeto do tipo CriaEmpresaResponse...");

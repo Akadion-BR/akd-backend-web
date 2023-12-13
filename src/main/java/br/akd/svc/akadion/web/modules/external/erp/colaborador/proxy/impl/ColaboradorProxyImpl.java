@@ -4,7 +4,7 @@ import br.akd.svc.akadion.web.exceptions.InternalErrorException;
 import br.akd.svc.akadion.web.globals.proxy.ProxyUtils;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyModuleEnum;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyOperationEnum;
-import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
+import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.external.erp.colaborador.CriacaoColaboradorResponse;
 import br.akd.svc.akadion.web.modules.external.erp.colaborador.proxy.ColaboradorProxy;
 import br.akd.svc.akadion.web.utils.Constantes;
@@ -24,22 +24,23 @@ public class ColaboradorProxyImpl {
     @Autowired
     ProxyUtils proxyUtils;
 
-    public CriacaoColaboradorResponse realizaCriacaoDeColaboradorNoErp(EmpresaEntity empresa) {
+    public CriacaoColaboradorResponse realizaCriacaoDeColaboradorNoErp(EmpresaId empresaId) {
 
         log.info("Método de serviço responsável pela integração com o ERP para solicitar a criação do colaborador " +
                 "raiz da empresa acessado");
         try {
-            log.info("Realizando envio de requisição de criação de colaborador raiz no ERP...");
-            ResponseEntity<CriacaoColaboradorResponse> responseAsaas =
-                    colaboradorProxy.solicitaCriacaoDeColaboradorRaizParaNovaEmpresa(empresa);
+        log.info("Realizando envio de requisição de criação de colaborador raiz no ERP...");
+        ResponseEntity<CriacaoColaboradorResponse> responseAsaas =
+                colaboradorProxy.solicitaCriacaoDeColaboradorRaizParaNovaEmpresa(empresaId);
+        log.info("Requisição realizada com sucesso");
 
-            log.info("Realizando validações referente à resposta do ERP...");
-            proxyUtils.realizaValidacaoResponseErp(
-                    responseAsaas, ProxyModuleEnum.COLABORADOR_RAIZ, ProxyOperationEnum.CRIACAO);
-            log.info("Validações realizadas com sucesso. Colaborador raiz criado na empresa com sucesso.");
+        log.info("Realizando validações referente à resposta do ERP...");
+        proxyUtils.realizaValidacaoResponseErp(
+                responseAsaas, ProxyModuleEnum.COLABORADOR_RAIZ, ProxyOperationEnum.CRIACAO);
+        log.info("Validações realizadas com sucesso. Colaborador raiz criado na empresa com sucesso.");
 
-            log.info("Retornando body da requisição...");
-            return responseAsaas.getBody();
+        log.info("Retornando body da requisição...");
+        return responseAsaas.getBody();
         } catch (FeignException feignException) {
             log.error("Ocorreu um erro durante a integração com o ERP para criação de colaborador raiz: {}",
                     feignException.getMessage());
