@@ -5,11 +5,8 @@ import br.akd.svc.akadion.web.globals.imagem.response.ImagemResponse;
 import br.akd.svc.akadion.web.globals.telefone.response.TelefoneResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.response.ConfigFiscalEmpresaResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
-import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.dto.response.ChamadoResponse;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -31,12 +28,11 @@ public class EmpresaResponse {
     private String inscricaoEstadual;
     private String inscricaoMunicipal;
     private Boolean ativa;
-    private String segmentoEmpresaEnum;
+    private String segmentoEmpresa;
     private ImagemResponse logo;
     private TelefoneResponse telefone;
     private EnderecoResponse endereco;
     private ConfigFiscalEmpresaResponse configFiscalEmpresa;
-    private List<ChamadoResponse> chamados = new ArrayList<>();
 
     public EmpresaResponse buildFromEntity(EmpresaEntity empresaEntity) {
         return empresaEntity != null
@@ -53,7 +49,7 @@ public class EmpresaResponse {
                 .inscricaoEstadual(empresaEntity.getInscricaoEstadual())
                 .inscricaoMunicipal(empresaEntity.getInscricaoMunicipal())
                 .ativa(empresaEntity.getAtiva())
-                .segmentoEmpresaEnum(empresaEntity.getSegmentoEmpresaEnum().toString())
+                .segmentoEmpresa(empresaEntity.getSegmentoEmpresaEnum().toString())
                 .logo(new ImagemResponse()
                         .buildFromEntity(empresaEntity.getLogo()))
                 .telefone(new TelefoneResponse()
@@ -62,8 +58,6 @@ public class EmpresaResponse {
                         .buildFromEntity(empresaEntity.getEndereco()))
                 .configFiscalEmpresa(new ConfigFiscalEmpresaResponse()
                         .buildFromEntity(empresaEntity.getConfigFiscalEmpresa()))
-                .chamados(new ChamadoResponse()
-                        .buildListFromEntity(empresaEntity.getChamados()))
                 .build()
                 : null;
     }
