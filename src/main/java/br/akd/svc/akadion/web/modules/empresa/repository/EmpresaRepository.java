@@ -28,7 +28,7 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, EmpresaI
     @Query(value = "SELECT e FROM EmpresaEntity e " +
             "WHERE e.clienteSistema.id = :idClienteSistemaSessao " +
             "AND ((:campoBusca IS NULL AND (:somenteEmpresasAtivas IS NULL OR e.ativa = :somenteEmpresasAtivas)) " +
-            "OR (upper(e.nome) LIKE %:campoBusca% and (:somenteEmpresasAtivas IS NULL OR e.ativa = :somenteEmpresasAtivas) " +
+            "OR (upper(e.nomeFantasia) LIKE %:campoBusca% and (:somenteEmpresasAtivas IS NULL OR e.ativa = :somenteEmpresasAtivas) " +
             "OR upper(e.razaoSocial) LIKE %:campoBusca% and (:somenteEmpresasAtivas IS NULL OR e.ativa = :somenteEmpresasAtivas) " +
             "OR lower(e.email) LIKE %:campoBusca% and (:somenteEmpresasAtivas IS NULL OR e.ativa = :somenteEmpresasAtivas) " +
             "OR upper(e.cnpj) LIKE %:campoBusca% and (:somenteEmpresasAtivas IS NULL OR e.ativa = :somenteEmpresasAtivas)))")
