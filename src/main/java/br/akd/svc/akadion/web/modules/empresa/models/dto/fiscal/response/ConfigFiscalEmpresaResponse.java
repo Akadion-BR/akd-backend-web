@@ -4,8 +4,6 @@ import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.response.nfce.Nf
 import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.response.nfe.NfeConfigResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.response.nfse.NfseConfigResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.ConfigFiscalEmpresaEntity;
-import br.akd.svc.akadion.web.modules.empresa.models.enums.fiscal.OrientacaoDanfeEnum;
-import br.akd.svc.akadion.web.modules.empresa.models.enums.fiscal.RegimeTributarioEnum;
 import lombok.*;
 
 @Getter
@@ -22,8 +20,8 @@ public class ConfigFiscalEmpresaResponse {
     private Boolean habilitaEnvioEmailDestinatario;
     private Boolean exibeReciboNaDanfe;
     private String cnpjContabilidade;
-    private OrientacaoDanfeEnum orientacaoDanfeEnum;
-    private RegimeTributarioEnum regimeTributarioEnum;
+    private String orientacaoDanfeEnum;
+    private String regimeTributarioEnum;
     private NfeConfigResponse nfeConfig;
     private NfceConfigResponse nfceConfig;
     private NfseConfigResponse nfseConfig;
@@ -38,8 +36,8 @@ public class ConfigFiscalEmpresaResponse {
                 .habilitaEnvioEmailDestinatario(configFiscalEmpresaEntity.getHabilitaEnvioEmailDestinatario())
                 .exibeReciboNaDanfe(configFiscalEmpresaEntity.getExibeReciboNaDanfe())
                 .cnpjContabilidade(configFiscalEmpresaEntity.getCnpjContabilidade())
-                .orientacaoDanfeEnum(configFiscalEmpresaEntity.getOrientacaoDanfeEnum())
-                .regimeTributarioEnum(configFiscalEmpresaEntity.getRegimeTributarioEnum())
+                .orientacaoDanfeEnum(configFiscalEmpresaEntity.getOrientacaoDanfeEnum().getDesc())
+                .regimeTributarioEnum(configFiscalEmpresaEntity.getRegimeTributarioEnum().getDesc())
                 .nfeConfig(new NfeConfigResponse().buildFromEntity(configFiscalEmpresaEntity.getNfeConfig()))
                 .nfceConfig(new NfceConfigResponse().buildFromEntity(configFiscalEmpresaEntity.getNfceConfig()))
                 .nfseConfig(new NfseConfigResponse().buildFromEntity(configFiscalEmpresaEntity.getNfseConfig()))
