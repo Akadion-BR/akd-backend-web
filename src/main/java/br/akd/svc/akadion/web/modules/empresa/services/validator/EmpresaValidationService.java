@@ -26,42 +26,42 @@ public class EmpresaValidationService {
 
     public void validacaoDeChaveUnicaParaNovaEmpresa(EmpresaRequest empresaRequest) {
         log.debug("Método de validação de chave única para criação de nova empresa acessado...");
-        if (ObjectUtils.isEmpty(empresaRequest.getCnpj()))
+        if (!ObjectUtils.isEmpty(empresaRequest.getCnpj()))
             validaSeCnpjJaExiste(empresaRequest.getCnpj());
 
-        if (ObjectUtils.isEmpty(empresaRequest.getRazaoSocial()))
+        if (!ObjectUtils.isEmpty(empresaRequest.getRazaoSocial()))
             validaSeRazaoSocialJaExiste(empresaRequest.getRazaoSocial());
 
-        if (ObjectUtils.isEmpty(empresaRequest.getEndpoint()))
+        if (!ObjectUtils.isEmpty(empresaRequest.getEndpoint()))
             validaSeEndpointJaExiste(empresaRequest.getEndpoint());
 
-        if (ObjectUtils.isEmpty(empresaRequest.getInscricaoEstadual()))
+        if (!ObjectUtils.isEmpty(empresaRequest.getInscricaoEstadual()))
             validaSeInscricaoEstadualJaExiste(empresaRequest.getInscricaoEstadual());
 
-        if (ObjectUtils.isEmpty(empresaRequest.getInscricaoMunicipal()))
+        if (!ObjectUtils.isEmpty(empresaRequest.getInscricaoMunicipal()))
             validaSeInscricaoEstadualJaExiste(empresaRequest.getInscricaoMunicipal());
     }
 
     public void validacaoDeChaveUnicaParaAtualizacaoDeEmpresa(EmpresaRequest empresaRequest,
                                                               EmpresaEntity empresaEditada) {
         log.debug("Método de validação de chave única para atualização de empresa acessado...");
-        if (ObjectUtils.isEmpty(empresaRequest.getCnpj())
+        if (!ObjectUtils.isEmpty(empresaRequest.getCnpj())
                 && !empresaEditada.getCnpj().equals(empresaRequest.getCnpj()))
             validaSeCnpjJaExiste(empresaRequest.getCnpj());
 
-        if (ObjectUtils.isEmpty(empresaRequest.getEndpoint())
+        if (!ObjectUtils.isEmpty(empresaRequest.getEndpoint())
                 && !empresaEditada.getEndpoint().equalsIgnoreCase(empresaRequest.getEndpoint()))
             validaSeEndpointJaExiste(empresaRequest.getEndpoint());
 
-        if (ObjectUtils.isEmpty(empresaRequest.getRazaoSocial())
+        if (!ObjectUtils.isEmpty(empresaRequest.getRazaoSocial())
                 && !empresaEditada.getRazaoSocial().equalsIgnoreCase(empresaRequest.getRazaoSocial()))
             validaSeRazaoSocialJaExiste(empresaRequest.getRazaoSocial());
 
-        if (ObjectUtils.isEmpty(empresaRequest.getInscricaoEstadual())
+        if (!ObjectUtils.isEmpty(empresaRequest.getInscricaoEstadual())
                 && !empresaEditada.getInscricaoEstadual().equalsIgnoreCase(empresaRequest.getInscricaoEstadual()))
             validaSeInscricaoEstadualJaExiste(empresaRequest.getInscricaoEstadual());
 
-        if (ObjectUtils.isEmpty(empresaRequest.getInscricaoMunicipal())
+        if (!ObjectUtils.isEmpty(empresaRequest.getInscricaoMunicipal())
                 && !empresaEditada.getInscricaoMunicipal().equalsIgnoreCase(empresaRequest.getInscricaoMunicipal()))
             validaSeInscricaoMunicipalJaExiste(empresaRequest.getInscricaoMunicipal());
     }
