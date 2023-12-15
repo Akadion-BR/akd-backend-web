@@ -19,7 +19,6 @@ public class EmpresaResponse {
     private UUID id;
     private String dataCadastro;
     private String horaCadastro;
-    private String nome;
     private String razaoSocial;
     private String cnpj;
     private String endpoint;
@@ -40,7 +39,6 @@ public class EmpresaResponse {
                 .id(empresaEntity.getId())
                 .dataCadastro(empresaEntity.getDataCadastro())
                 .horaCadastro(empresaEntity.getHoraCadastro())
-                .nome(empresaEntity.getNome())
                 .razaoSocial(empresaEntity.getRazaoSocial())
                 .cnpj(empresaEntity.getCnpj())
                 .endpoint(empresaEntity.getEndpoint())

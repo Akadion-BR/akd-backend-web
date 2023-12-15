@@ -63,10 +63,6 @@ public class EmpresaEntity {
     @Column(name = "HR_HORACADASTRO_EMP", nullable = false, updatable = false, length = 18)
     private String horaCadastro;
 
-    @Comment("Nome da empresa")
-    @Column(name = "STR_NOME_EMP", nullable = false, length = 70)
-    private String nome;
-
     @Comment("Razão social da empresa")
     @Column(name = "STR_RAZAOSOCIAL_EMP", nullable = false, updatable = false, length = 70)
     private String razaoSocial;
@@ -163,7 +159,6 @@ public class EmpresaEntity {
                 .clienteSistema(clienteSistema)
                 .dataCadastro(LocalDate.now().toString())
                 .horaCadastro(LocalTime.now().toString())
-                .nome(empresaRequest.getNome())
                 .razaoSocial(empresaRequest.getRazaoSocial())
                 .cnpj(empresaRequest.getCnpj())
                 .endpoint(empresaRequest.getEndpoint().toLowerCase())
@@ -191,7 +186,6 @@ public class EmpresaEntity {
                 .clienteSistema(empresaPreAtualizacao.getClienteSistema())
                 .dataCadastro(empresaPreAtualizacao.getDataCadastro())
                 .horaCadastro(empresaPreAtualizacao.getHoraCadastro())
-                .nome(empresaRequest.getNome())
                 .razaoSocial(empresaPreAtualizacao.getRazaoSocial())
                 .cnpj(empresaPreAtualizacao.getCnpj())
                 .endpoint(empresaRequest.getEndpoint().toLowerCase())

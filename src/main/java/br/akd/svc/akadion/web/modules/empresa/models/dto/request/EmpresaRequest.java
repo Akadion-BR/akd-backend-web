@@ -15,10 +15,6 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class EmpresaRequest {
 
-    @NotEmpty(message = "O nome da empresa não pode estar vazio")
-    @Size(max = 70, message = "O nome da empresa deve conter no máximo {max} caracteres")
-    private String nome;
-
     @NotEmpty(message = "A razão social não pode estar vazia")
     @Size(max = 70, message = "A razão social deve conter no máximo {max} caracteres")
     private String razaoSocial;
