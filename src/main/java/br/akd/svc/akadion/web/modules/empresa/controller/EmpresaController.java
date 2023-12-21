@@ -3,6 +3,7 @@ package br.akd.svc.akadion.web.modules.empresa.controller;
 import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
 import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
 import br.akd.svc.akadion.web.exceptions.UnauthorizedAccessException;
+import br.akd.svc.akadion.web.globals.cpfcnpj.models.CnpjRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.CriaEmpresaResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.EmpresaResponse;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -73,6 +75,34 @@ public class EmpresaController {
                 .body(empresaService.criaNovaEmpresa(
                         idClienteSessao,
                         empresaRequest));
+    }
+
+    /**
+     * Validação de CNPJ para criação de nova empresa
+     * Esse endpoint tem como objetivo realizar a verificação de já existência do CNPJ enviado
+     *
+     * @param cnpjRequest CNPJ a ser validado
+     * @return Retorna status da requisição
+     */
+    @PostMapping("/verifica-cnpj")
+    @Tag(name = "Validação de CNPJ da criação de nova empresa")
+    @Operation(summary = "Esse endpoint tem como objetivo realizar a verificação de já existência do CNPJ enviado",
+            method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "O CNPJ informado ainda não existe",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CnpjRequest.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "O CNPJ informado já existe",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = InvalidRequestException.class))})
+    })
+    public ResponseEntity<?> verificaSeCpfJaExiste(@Valid @RequestBody CnpjRequest cnpjRequest) {
+        log.info("Método controlador de validação se CNPJ é válido acessado");
+        empresaService.realizaValidacaoCnpj(cnpjRequest);
+        log.info("Validação de CNPJ realizada com sucesso. O CNPJ informado está disponível");
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**

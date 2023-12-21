@@ -9,11 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class NfceConfigRequest {
     private Long proximoNumeroProducao;
-    private Long proximoNumeroHomologacao;
     private Integer serieProducao;
-    private Integer serieHomologacao;
     private String cscProducao;
-    private String cscHomologacao;
     private Long idTokenProducao;
-    private Long idTokenHomologacao;
 }

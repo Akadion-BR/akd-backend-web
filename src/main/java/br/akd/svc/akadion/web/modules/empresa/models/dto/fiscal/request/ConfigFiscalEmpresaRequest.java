@@ -1,9 +1,9 @@
 package br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request;
 
+import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request.certificado.CertificadoDigitalRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request.nfce.NfceConfigRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request.nfe.NfeConfigRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request.nfse.NfseConfigRequest;
-import br.akd.svc.akadion.web.modules.empresa.models.enums.fiscal.OrientacaoDanfeEnum;
 import br.akd.svc.akadion.web.modules.empresa.models.enums.fiscal.RegimeTributarioEnum;
 import lombok.*;
 
@@ -33,9 +33,6 @@ public class ConfigFiscalEmpresaRequest {
     @NotNull(message = "Campo 'Envio de e-mails para o destinatário' não informado")
     private Boolean habilitaEnvioEmailDestinatario = false;
 
-    @NotNull(message = "Campo 'Exibe recibo na DANFE' não informado")
-    private Boolean exibeReciboNaDanfe = true;
-
     @Size(message = "O CNPJ da contabilidade deve possuir {max} caracteres", max = 18, min = 18)
     @Pattern(regexp = "(\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2})",
             message = "O CNPJ da contabilidade informado é inválido")
@@ -43,11 +40,6 @@ public class ConfigFiscalEmpresaRequest {
 
     @Size(message = "A senha do certificado digital deve possuir no máximo {max} caracteres", max = 30)
     private String senhaCertificadoDigital;
-
-    private byte[] certificadoDigital;
-
-    @NotNull(message = "O campo 'orientação DANFE' não pode ser nulo")
-    private OrientacaoDanfeEnum orientacaoDanfe = OrientacaoDanfeEnum.PORTRAIT;
 
     @NotNull(message = "O campo 'Regime tributário' não pode ser nulo")
     private RegimeTributarioEnum regimeTributario = RegimeTributarioEnum.SIMPLES_NACIONAL;
@@ -60,4 +52,7 @@ public class ConfigFiscalEmpresaRequest {
 
     @Valid
     private NfseConfigRequest nfseConfig;
+
+    @Valid
+    private CertificadoDigitalRequest certificadoDigital;
 }
