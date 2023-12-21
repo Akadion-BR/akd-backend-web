@@ -246,7 +246,7 @@ public class GeradorBodyHtmlEmail {
                         "<div style='width: 100%; padding: 0rem 1rem;background-color: #E7E7E7'>" +
                         "<p style='width: 100%; display: flex; justify-content: center; font-size: 0.7rem; color: #272930; font-weight: 600;'>" +
                         "Este documento e cobrança não possuem valor fiscal e são de responsabilidade única e " +
-                        "exclusiva de " + empresaEntity.getNome() +
+                        "exclusiva de " + empresaEntity.getNomeFantasia() +
                         ConstantesEmail.PARAGRAPH_EMAIL_ENVIADO_POR_AKADION +
                         ConstantesEmail.CLOSE_PARAGRAPH +
                         ConstantesEmail.CLOSE_DIV +

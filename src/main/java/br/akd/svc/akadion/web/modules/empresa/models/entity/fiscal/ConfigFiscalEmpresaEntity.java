@@ -1,10 +1,10 @@
 package br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal;
 
 import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request.ConfigFiscalEmpresaRequest;
+import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.certificado.CertificadoDigitalEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.nfce.NfceConfigEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.nfe.NfeConfigEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.nfse.NfseConfigEntity;
-import br.akd.svc.akadion.web.modules.empresa.models.enums.fiscal.OrientacaoDanfeEnum;
 import br.akd.svc.akadion.web.modules.empresa.models.enums.fiscal.RegimeTributarioEnum;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -24,8 +24,6 @@ import java.util.UUID;
 @Table(name = "TB_AKD_CFGFISCAL")
 public class ConfigFiscalEmpresaEntity {
 
-    //TODO ADICIONAR VALIDAÇÕES DE DADOS CADASTRADOS DA EMPRESA PRA TIPOS DE NF HABILITADOS. POR EX: NFSE NÃO EXIGE IE CADASTRADA, AGORA NFE E NFCE EXIGEM
-
     @Id
     @Type(type = "uuid-char")
     @GeneratedValue(generator = "UUID")
@@ -34,18 +32,22 @@ public class ConfigFiscalEmpresaEntity {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
+    @Builder.Default
     @Comment("Impostos discriminados na nota fiscal")
     @Column(name = "BOL_DISCRIMINAIMPOSTOS_CFF", nullable = false)
     private Boolean discriminaImpostos = false;
 
+    @Builder.Default
     @Comment("NFE Habilitada")
     @Column(name = "BOL_HABILITANFE_CFF", nullable = false)
     private Boolean habilitaNfe = false;
 
+    @Builder.Default
     @Comment("NFCE Habilitada")
     @Column(name = "BOL_HABILITANFCE_CFF", nullable = false)
     private Boolean habilitaNfce = false;
 
+    @Builder.Default
     @Comment("NFSE Habilitada")
     @Column(name = "BOL_HABILITANFSE_CFF", nullable = false)
     private Boolean habilitaNfse = false;
@@ -54,26 +56,21 @@ public class ConfigFiscalEmpresaEntity {
     @Column(name = "BOL_HABILITAENVIOEMAILDESTINATARIO_CFF", nullable = false)
     private Boolean habilitaEnvioEmailDestinatario = false;
 
-    @Comment("Exibe recibo na DANFE")
-    @Column(name = "BOL_EXIBERECIBODANFE_CFF", nullable = false)
-    private Boolean exibeReciboNaDanfe = false;
-
     @Comment("CNPJ da contabilidade")
     @Column(name = "STR_CNPJCONTABILIDADE_CFF", length = 18)
     private String cnpjContabilidade;
 
-    @Comment("Certificado digital")
-    @Column(name = "ARQ_CERTIFICADODIGITAL_CFF", nullable = false)
-    private byte[] certificadoDigital;
-
     @Comment("CNPJ da contabilidade")
-    @Column(name = "STR_SENHACERTIFICADODIGITAL_CFF", nullable = false, length = 50)
+    @Column(name = "STR_SENHACERTIFICADODIGITAL_CFF", length = 50)
     private String senhaCertificadoDigital;
 
-    @Enumerated(EnumType.STRING)
-    @Comment("Orientação da DANFE: 0 - Retrato, 1 - Paisagem")
-    @Column(name = "ENM_ORIENTACAODANFE_CFF", nullable = false)
-    private OrientacaoDanfeEnum orientacaoDanfeEnum = OrientacaoDanfeEnum.PORTRAIT;
+    @Comment("Token de homologação")
+    @Column(name = "STR_TOKENHOMOLOGACAO_NFECFG")
+    private String tokenHomologacao;
+
+    @Comment("Token de produção")
+    @Column(name = "STR_TOKENPRODUCAO_NFECFG")
+    private String tokenProducao;
 
     @Enumerated(EnumType.STRING)
     @Comment("Regime tributário: " +
@@ -82,6 +79,17 @@ public class ConfigFiscalEmpresaEntity {
             "2 - Regime normal")
     @Column(name = "ENM_REGIMETRIBUTARIO_CFF", nullable = false)
     private RegimeTributarioEnum regimeTributarioEnum;
+
+    @ToString.Exclude
+    @Comment("Código do certificado digital")
+    @OneToOne(targetEntity = CertificadoDigitalEntity.class,
+            orphanRemoval = true,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "COD_CERTIFICADODIGITAL_CRD",
+            referencedColumnName = "COD_CERTIFICADODIGITAL_CRD",
+            foreignKey = @ForeignKey(name = "FK_CERTIFICADODIGITAL_CONFIGFISCAL"))
+    private CertificadoDigitalEntity certificadoDigital;
 
     @ToString.Exclude
     @Comment("Código da configuração de NFE")
@@ -116,7 +124,9 @@ public class ConfigFiscalEmpresaEntity {
             foreignKey = @ForeignKey(name = "FK_NFSECONFIG_CONFIGFISCAL"))
     private NfseConfigEntity nfseConfig;
 
-    public ConfigFiscalEmpresaEntity buildFromRequest(ConfigFiscalEmpresaRequest configFiscalEmpresaRequest) {
+    public ConfigFiscalEmpresaEntity buildFromRequest(ConfigFiscalEmpresaRequest configFiscalEmpresaRequest,
+                                                      CertificadoDigitalEntity certificadoDigitalEntity) {
+
         return configFiscalEmpresaRequest != null
                 ? ConfigFiscalEmpresaEntity.builder()
                 .discriminaImpostos(configFiscalEmpresaRequest.getDiscriminaImpostos())
@@ -124,12 +134,10 @@ public class ConfigFiscalEmpresaEntity {
                 .habilitaNfce(configFiscalEmpresaRequest.getHabilitaNfce())
                 .habilitaNfse(configFiscalEmpresaRequest.getHabilitaNfse())
                 .habilitaEnvioEmailDestinatario(configFiscalEmpresaRequest.getHabilitaEnvioEmailDestinatario())
-                .exibeReciboNaDanfe(configFiscalEmpresaRequest.getExibeReciboNaDanfe())
                 .cnpjContabilidade(configFiscalEmpresaRequest.getCnpjContabilidade())
                 .senhaCertificadoDigital(configFiscalEmpresaRequest.getSenhaCertificadoDigital())
-                .orientacaoDanfeEnum(configFiscalEmpresaRequest.getOrientacaoDanfe())
                 .regimeTributarioEnum(configFiscalEmpresaRequest.getRegimeTributario())
-                .certificadoDigital(configFiscalEmpresaRequest.getCertificadoDigital())
+                .certificadoDigital(certificadoDigitalEntity)
                 .nfeConfig(new NfeConfigEntity().buildFromRequest(configFiscalEmpresaRequest.getNfeConfig()))
                 .nfceConfig(new NfceConfigEntity().buildFromRequest(configFiscalEmpresaRequest.getNfceConfig()))
                 .nfseConfig(new NfseConfigEntity().buildFromRequest(configFiscalEmpresaRequest.getNfseConfig()))

@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 public class ConfirmacaoPagamentoWebhookService {
 
     public void realizaAtualizacaoDePagamentoRealizado(PagamentoWebHookRequest pagamentoWebHookRequest) {
-        //TODO CRIAR LÓGICA PARA PAGAMENTO CONFIRMADO
 
-        //TODO CRIAR LÓGICA DE ENVIO DE E-MAILS
     }
 
 }

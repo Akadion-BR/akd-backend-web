@@ -1,6 +1,9 @@
 package br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request.nfe;
 
+import br.akd.svc.akadion.web.modules.empresa.models.enums.fiscal.OrientacaoDanfeEnum;
 import lombok.*;
+
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -8,11 +11,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NfeConfigRequest {
-
-    //TODO JAVAX VALIDATOR
-
     private Long proximoNumeroProducao;
-    private Long proximoNumeroHomologacao;
     private Integer serieProducao;
-    private Integer serieHomologacao;
+    private Boolean exibirReciboNaDanfe;
+    private Boolean imprimirColunasDoIpi;
+    private Boolean mostraDadosDoIssqn;
+    private Boolean imprimirImpostosAdicionaisNaDanfe;
+    private Boolean sempreMostrarVolumesNaDanfe;
+    @NotNull(message = "O campo 'orientação DANFE' não pode ser nulo")
+    private OrientacaoDanfeEnum orientacaoDanfe;
 }

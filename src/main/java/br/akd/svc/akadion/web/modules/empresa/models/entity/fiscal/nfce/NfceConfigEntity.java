@@ -63,13 +63,13 @@ public class NfceConfigEntity {
         return nfceConfigRequest != null
                 ? NfceConfigEntity.builder()
                 .proximoNumeroProducao(nfceConfigRequest.getProximoNumeroProducao())
-                .proximoNumeroHomologacao(nfceConfigRequest.getProximoNumeroHomologacao())
+                .proximoNumeroHomologacao(null)
                 .serieProducao(nfceConfigRequest.getSerieProducao())
-                .serieHomologacao(nfceConfigRequest.getSerieHomologacao())
+                .serieHomologacao(null)
                 .cscProducao(nfceConfigRequest.getCscProducao())
-                .cscHomologacao(nfceConfigRequest.getCscHomologacao())
+                .cscHomologacao(null)
                 .idTokenProducao(nfceConfigRequest.getIdTokenProducao())
-                .idTokenHomologacao(nfceConfigRequest.getIdTokenHomologacao())
+                .idTokenHomologacao(null)
                 .build()
                 : null;
     }

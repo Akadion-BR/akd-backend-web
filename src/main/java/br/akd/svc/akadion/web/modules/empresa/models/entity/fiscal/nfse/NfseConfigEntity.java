@@ -46,9 +46,9 @@ public class NfseConfigEntity {
         return nfseConfigRequest != null
                 ? NfseConfigEntity.builder()
                 .proximoNumeroProducao(nfseConfigRequest.getProximoNumeroProducao())
-                .proximoNumeroHomologacao(nfseConfigRequest.getProximoNumeroHomologacao())
+                .proximoNumeroHomologacao(null)
                 .serieProducao(nfseConfigRequest.getSerieProducao())
-                .serieHomologacao(nfseConfigRequest.getSerieHomologacao())
+                .serieHomologacao(null)
                 .build()
                 : null;
     }

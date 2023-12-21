@@ -42,7 +42,6 @@ import java.util.stream.Collectors;
 public class ClienteSistemaEntity {
 
     @Id
-    @JsonIgnore
     @Type(type = "uuid-char")
     @GeneratedValue(generator = "UUID")
     @Column(name = "COD_CLIENTESISTEMA_CLS")
@@ -50,47 +49,38 @@ public class ClienteSistemaEntity {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @JsonIgnore
     @Comment("Código de identificação do cliente sistêmico na integradora ASAAS")
     @Column(name = "COD_ASAAS_CLS", nullable = false, updatable = false)
     private String codigoClienteAsaas;
 
-    @JsonIgnore
     @Comment("Data em que o cadastro do cliente sistêmico foi realizado")
     @Column(name = "DT_DATACADASTRO_CLS", nullable = false, updatable = false, length = 10)
     private String dataCadastro;
 
-    @JsonIgnore
     @Comment("Hora em que o cadastro do cliente sistêmico foi realizado")
     @Column(name = "HR_HORACADASTRO_CLS", nullable = false, updatable = false, length = 18)
     private String horaCadastro;
 
-    @JsonIgnore
     @Comment("Data de nascimento do cliente sistêmico")
     @Column(name = "DT_DATANASCIMENTO_CLS", length = 10)
     private String dataNascimento;
 
-    @JsonIgnore
     @Comment("E-mail do cliente sistêmico")
     @Column(name = "EML_EMAIL_CLS", nullable = false, length = 70)
     private String email;
 
-    @JsonIgnore
     @Comment("Nome do cliente sistêmico")
     @Column(name = "STR_NOME_CLS", nullable = false, length = 70)
     private String nome;
 
-    @JsonIgnore
     @Comment("Senha de acesso ao sistema do cliente sistêmico")
     @Column(name = "STR_SENHA_CLS", nullable = false, length = 72)
     private String senha;
 
-    @JsonIgnore
     @Comment("CPF do cliente sistêmico")
     @Column(name = "STR_CPF_CLS", nullable = false, updatable = false, length = 14)
     private String cpf;
 
-    @JsonIgnore
     @Builder.Default
     @Comment("Saldo do cliente")
     @Column(name = "DBL_SALDO_CLS", nullable = false, scale = 2)
