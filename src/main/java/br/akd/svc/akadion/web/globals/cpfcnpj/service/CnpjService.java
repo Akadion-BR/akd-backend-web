@@ -45,12 +45,9 @@ public class CnpjService {
         }
 
         int restoDivisaoDaSomaPorOnze = somaValoresMultiplicacao % 11;
+        if (restoDivisaoDaSomaPorOnze > 9) restoDivisaoDaSomaPorOnze = 0;
 
-        int onzeMenosRestoDaDivisao = (restoDivisaoDaSomaPorOnze == 0 || restoDivisaoDaSomaPorOnze == 1)
-                ? 0
-                : restoDivisaoDaSomaPorOnze;
-
-        if (!Objects.equals(digitoVerificador, String.valueOf(onzeMenosRestoDaDivisao)))
+        if (!Objects.equals(digitoVerificador, String.valueOf(restoDivisaoDaSomaPorOnze)))
             throw new InvalidRequestException("O CNPJ enviado é inválido");
     }
 
