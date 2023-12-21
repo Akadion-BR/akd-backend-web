@@ -18,9 +18,7 @@ public class ConfigFiscalEmpresaResponse {
     private Boolean habilitaNfce;
     private Boolean habilitaNfse;
     private Boolean habilitaEnvioEmailDestinatario;
-    private Boolean exibeReciboNaDanfe;
     private String cnpjContabilidade;
-    private String orientacaoDanfeEnum;
     private String regimeTributarioEnum;
     private NfeConfigResponse nfeConfig;
     private NfceConfigResponse nfceConfig;
@@ -34,9 +32,7 @@ public class ConfigFiscalEmpresaResponse {
                 .habilitaNfce(configFiscalEmpresaEntity.getHabilitaNfce())
                 .habilitaNfse(configFiscalEmpresaEntity.getHabilitaNfse())
                 .habilitaEnvioEmailDestinatario(configFiscalEmpresaEntity.getHabilitaEnvioEmailDestinatario())
-                .exibeReciboNaDanfe(configFiscalEmpresaEntity.getExibeReciboNaDanfe())
                 .cnpjContabilidade(configFiscalEmpresaEntity.getCnpjContabilidade())
-                .orientacaoDanfeEnum(configFiscalEmpresaEntity.getOrientacaoDanfeEnum().getDesc())
                 .regimeTributarioEnum(configFiscalEmpresaEntity.getRegimeTributarioEnum().getDesc())
                 .nfeConfig(new NfeConfigResponse().buildFromEntity(configFiscalEmpresaEntity.getNfeConfig()))
                 .nfceConfig(new NfceConfigResponse().buildFromEntity(configFiscalEmpresaEntity.getNfceConfig()))
