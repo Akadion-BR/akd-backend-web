@@ -63,6 +63,29 @@ public class ProxyUtils {
         }
     }
 
+    public void realizaValidacaoResponseFocusNfe(ResponseEntity<?> responseEntity,
+                                                 ProxyModuleEnum proxyModuleEnum,
+                                                 ProxyOperationEnum proxyOperationEnum) {
+        if (responseEntity == null) {
+            log.error("O valor retornado pela integradora na [{}] do(a) [{}] é nulo",
+                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc());
+            throw new InternalErrorException(Constantes.ERRO_INTERNO);
+        }
+
+        if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+            log.error("Ocorreu um erro de status de resposta no processo de [{}] do(a) [{}] na integradora " +
+                            "Focus NFE. Corpo da requisição: {}",
+                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc(), responseEntity.getBody());
+            throw new InternalErrorException(Constantes.ERRO_INTERNO);
+        }
+
+        if (responseEntity.getBody() == null) {
+            log.error("O valor retornado pela Focus NFE no processo de [{}] do(a) [{}}] é nulo",
+                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc());
+            throw new InternalErrorException(Constantes.ERRO_INTERNO);
+        }
+    }
+
     public RuntimeException realizaTratamentoRetornoErroFeignException(FeignException feignException,
                                                                        ProxyModuleEnum proxyModuleEnum,
                                                                        ProxyOperationEnum proxyOperationEnum) {
