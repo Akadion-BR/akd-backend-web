@@ -7,6 +7,7 @@ import br.akd.svc.akadion.web.globals.telefone.entity.TelefoneEntity;
 import br.akd.svc.akadion.web.modules.cliente.models.entity.ClienteSistemaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.ConfigFiscalEmpresaEntity;
+import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.certificado.CertificadoDigitalEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.empresa.models.enums.SegmentoEmpresaEnum;
 import br.akd.svc.akadion.web.modules.external.backoffice.chamado.models.entity.ChamadoEntity;
@@ -154,7 +155,8 @@ public class EmpresaEntity {
     private List<ChamadoEntity> chamados = new ArrayList<>();
 
     public EmpresaEntity buildFromRequest(ClienteSistemaEntity clienteSistema,
-                                          EmpresaRequest empresaRequest) {
+                                          EmpresaRequest empresaRequest,
+                                          CertificadoDigitalEntity certificadoDigitalEntity) {
         return EmpresaEntity.builder()
                 .clienteSistema(clienteSistema)
                 .dataCadastro(LocalDate.now().toString())
@@ -167,14 +169,15 @@ public class EmpresaEntity {
                 .inscricaoEstadual(empresaRequest.getInscricaoEstadual())
                 .inscricaoMunicipal(empresaRequest.getInscricaoMunicipal())
                 .ativa(true)
-                .segmentoEmpresaEnum(empresaRequest.getSegmentoEmpresa())
+                .segmentoEmpresaEnum(SegmentoEmpresaEnum.BATERIA_AUTOMOTIVA)
                 .exclusao(null)
                 .logo(null)
                 .telefone(new TelefoneEntity()
                         .buildFromRequest(empresaRequest.getTelefone()))
                 .endereco(new EnderecoEntity()
                         .buildFromRequest(empresaRequest.getEndereco()))
-                .configFiscalEmpresa(null)
+                .configFiscalEmpresa(new ConfigFiscalEmpresaEntity()
+                        .buildFromRequest(empresaRequest.getConfigFiscal(), certificadoDigitalEntity))
                 .chamados(new ArrayList<>())
                 .build();
     }
@@ -196,7 +199,7 @@ public class EmpresaEntity {
                 .ativa(empresaPreAtualizacao.getAtiva())
                 .exclusao(empresaPreAtualizacao.getExclusao())
                 .logo(empresaPreAtualizacao.getLogo())
-                .segmentoEmpresaEnum(empresaRequest.getSegmentoEmpresa())
+                .segmentoEmpresaEnum(empresaPreAtualizacao.getSegmentoEmpresaEnum())
                 .telefone(new TelefoneEntity()
                         .buildFromRequest(empresaRequest.getTelefone()))
                 .endereco(new EnderecoEntity()

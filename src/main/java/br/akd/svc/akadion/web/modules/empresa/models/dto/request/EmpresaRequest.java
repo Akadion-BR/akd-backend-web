@@ -2,7 +2,7 @@ package br.akd.svc.akadion.web.modules.empresa.models.dto.request;
 
 import br.akd.svc.akadion.web.globals.endereco.dto.request.EnderecoRequest;
 import br.akd.svc.akadion.web.globals.telefone.request.TelefoneRequest;
-import br.akd.svc.akadion.web.modules.empresa.models.enums.SegmentoEmpresaEnum;
+import br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request.ConfigFiscalEmpresaRequest;
 import lombok.*;
 
 import javax.validation.Valid;
@@ -26,7 +26,7 @@ public class EmpresaRequest {
 
     @NotEmpty(message = "O endpoint não pode estar vazio")
     @Size(max = 30, message = "O endpoint deverá conter no máximo {} caracteres")
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "O endpoint deve possuir apenas letras")
+    @Pattern(regexp = "^[a-z]*$", message = "O endpoint deve possuir apenas letras")
     private String endpoint;
 
     @Email(message = "O e-mail informado é inválido")
@@ -44,9 +44,6 @@ public class EmpresaRequest {
     @Pattern(regexp = "\\d{12}", message = "A inscrição municipal informada está inválida")
     private String inscricaoMunicipal;
 
-    @NotNull(message = "Segmento da empesa não informado")
-    private SegmentoEmpresaEnum segmentoEmpresa;
-
     @Valid
     @NotNull(message = "Telefone da empresa não informado")
     private TelefoneRequest telefone;
@@ -54,4 +51,8 @@ public class EmpresaRequest {
     @Valid
     @NotNull(message = "Endereço da empresa não informado")
     private EnderecoRequest endereco;
+
+    @Valid
+    @NotNull(message = "Configuração fiscal da empresa não informada")
+    private ConfigFiscalEmpresaRequest configFiscal;
 }
