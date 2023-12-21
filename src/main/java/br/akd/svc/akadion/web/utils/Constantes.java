@@ -7,6 +7,8 @@ public class Constantes {
 
     public static final String TOKEN_ASAAS = "TOKEN_ASAAS";
 
+    public static final String TOKEN_FOCUS_PRODUCAO = "TOKEN_FOCUS_PRODUCAO";
+
     public static final String ERRO_INTERNO = "Ocorreu um erro interno no servidor da aplicação. Favor " +
             "entrar com contato com o suporte";
 
