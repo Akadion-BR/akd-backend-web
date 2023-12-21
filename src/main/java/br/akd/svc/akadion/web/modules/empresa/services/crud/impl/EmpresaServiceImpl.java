@@ -1,5 +1,9 @@
 package br.akd.svc.akadion.web.modules.empresa.services.crud.impl;
 
+import br.akd.svc.akadion.web.exceptions.InternalErrorException;
+import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
+import br.akd.svc.akadion.web.globals.cpfcnpj.models.CnpjRequest;
+import br.akd.svc.akadion.web.globals.cpfcnpj.service.CnpjService;
 import br.akd.svc.akadion.web.globals.exclusao.entity.ExclusaoEntity;
 import br.akd.svc.akadion.web.modules.cliente.models.entity.ClienteSistemaEntity;
 import br.akd.svc.akadion.web.modules.cliente.repository.impl.ClienteSistemaRepositoryImpl;
@@ -9,12 +13,16 @@ import br.akd.svc.akadion.web.modules.empresa.models.dto.response.CriaEmpresaRes
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.EmpresaResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.page.EmpresaPageResponse;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
+import br.akd.svc.akadion.web.modules.empresa.models.entity.fiscal.certificado.CertificadoDigitalEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
+import br.akd.svc.akadion.web.modules.empresa.proxy.operations.criacao.impl.CriacaoEmpresaFocusProxyImpl;
+import br.akd.svc.akadion.web.modules.empresa.proxy.operations.criacao.models.response.CriaEmpresaFocusResponse;
 import br.akd.svc.akadion.web.modules.empresa.repository.impl.EmpresaRepositoryImpl;
 import br.akd.svc.akadion.web.modules.empresa.services.crud.EmpresaService;
 import br.akd.svc.akadion.web.modules.empresa.services.validator.EmpresaValidationService;
 import br.akd.svc.akadion.web.modules.external.erp.colaborador.CriacaoColaboradorResponse;
 import br.akd.svc.akadion.web.modules.external.erp.colaborador.proxy.impl.ColaboradorProxyImpl;
+import br.akd.svc.akadion.web.utils.Constantes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +49,13 @@ public class EmpresaServiceImpl implements EmpresaService {
     ClienteSistemaValidationService clienteSistemaValidationService;
 
     @Autowired
+    CnpjService cnpjService;
+
+    @Autowired
     ColaboradorProxyImpl colaboradorProxy;
+
+    @Autowired
+    CriacaoEmpresaFocusProxyImpl criacaoEmpresaFocusProxy;
 
     @Override
     @Transactional
@@ -61,8 +75,16 @@ public class EmpresaServiceImpl implements EmpresaService {
         log.info("Iniciando acesso ao método de validação de variáveis de chave única para empresa...");
         empresaValidationService.validacaoDeChaveUnicaParaNovaEmpresa(empresaRequest);
 
+        CriaEmpresaFocusResponse criaEmpresaFocusResponse = criacaoEmpresaFocusProxy
+                .realizaCriacaoDeEmpresaNaIntegradoraFocusNfe(true, empresaRequest);
+
+        CertificadoDigitalEntity certificadoDigitalEntity = empresaRequest.getConfigFiscal().getCertificadoDigital() != null
+                ? new CertificadoDigitalEntity().buildFromFocusResponse(empresaRequest, criaEmpresaFocusResponse)
+                : null;
+
         log.info("Iniciando construção do objeto EmpresaEntity...");
-        EmpresaEntity empresaEntity = new EmpresaEntity().buildFromRequest(clienteSistema, empresaRequest);
+        EmpresaEntity empresaEntity = new EmpresaEntity().buildFromRequest(
+                clienteSistema, empresaRequest, certificadoDigitalEntity);
         log.info("Construção de objeto EmpresaEntity realizado com sucesso");
 
         log.info("Adicionando a empresa à lista de empresas do cliente...");
@@ -113,6 +135,25 @@ public class EmpresaServiceImpl implements EmpresaService {
 
         log.info("A busca paginada de empresas foi realizada com sucesso");
         return empresaPageResponse;
+    }
+
+    @Override
+    public void realizaValidacaoCnpj(CnpjRequest cnpjRequest) {
+        log.info("Método responsável por implementar a lógica de validação de CNPJ acessado");
+
+        try {
+            log.info("Iniciando validação dos dígitos verificadores do CNPJ...");
+            cnpjService.realizaValidacaoCnpj(cnpjRequest.getCnpj());
+            log.info("Validação dos dígitos verificadores do CNPJ realizada com sucesso");
+
+            log.info("Iniciando acesso ao método de validação se CNPJ já existe...");
+            empresaValidationService.validaSeCnpjJaExiste(cnpjRequest.getCnpj());
+            log.info("Validação de duplicidade de CNPJ realizada com sucesso");
+        } catch (InvalidRequestException invalidRequestException) {
+            throw new InvalidRequestException(invalidRequestException.getMessage());
+        } catch (Exception exception) {
+            throw new InternalErrorException(Constantes.ERRO_INTERNO);
+        }
     }
 
     @Override
