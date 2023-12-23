@@ -64,7 +64,7 @@ public class CertificadoDigitalEntity {
                 .nomeArquivo(empresaRequest.getConfigFiscal().getCertificadoDigital().getNomeArquivo())
                 .tipoArquivo(empresaRequest.getConfigFiscal().getCertificadoDigital().getTipoArquivo())
                 .tamanhoArquivo(empresaRequest.getConfigFiscal().getCertificadoDigital().getTamanhoArquivo())
-                .nomeArquivo(criaEmpresaFocusResponse.getCertificadoValidoAte())
+                .dataValidade(criaEmpresaFocusResponse.getCertificadoValidoAte())
                 .build();
 
     }
