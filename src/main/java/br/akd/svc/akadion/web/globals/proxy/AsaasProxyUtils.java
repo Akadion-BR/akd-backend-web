@@ -1,7 +1,7 @@
 package br.akd.svc.akadion.web.globals.proxy;
 
-import br.akd.svc.akadion.web.exceptions.InternalErrorException;
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.InternalErrorException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyModuleEnum;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyOperationEnum;
 import br.akd.svc.akadion.web.modules.cliente.proxy.models.error.FeignErrorResponse;
@@ -15,30 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ProxyUtils {
-
-    public void realizaValidacaoResponseErp(ResponseEntity<?> responseEntity,
-                                            ProxyModuleEnum proxyModuleEnum,
-                                            ProxyOperationEnum proxyOperationEnum) {
-        if (responseEntity == null) {
-            log.error("O valor retornado pelo ERP na [{}] do(a) [{}] é nulo",
-                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc());
-            throw new InternalErrorException(Constantes.ERRO_INTERNO);
-        }
-
-        if (!responseEntity.getStatusCode().is2xxSuccessful()) {
-            log.error("Ocorreu um erro de status de resposta no processo de [{}] do(a) [{}] no ERP. " +
-                            "Corpo da requisição: {}",
-                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc(), responseEntity.getBody());
-            throw new InternalErrorException(Constantes.ERRO_INTERNO);
-        }
-
-        if (responseEntity.getBody() == null) {
-            log.error("O valor retornado pelo ERP no processo de [{}] do(a) [{}}] é nulo",
-                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc());
-            throw new InternalErrorException(Constantes.ERRO_INTERNO);
-        }
-    }
+public class AsaasProxyUtils {
 
     public void realizaValidacaoResponseAsaas(ResponseEntity<?> responseEntity,
                                               ProxyModuleEnum proxyModuleEnum,
@@ -58,29 +35,6 @@ public class ProxyUtils {
 
         if (responseEntity.getBody() == null) {
             log.error("O valor retornado pela integradora no processo de [{}] do(a) [{}}] é nulo",
-                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc());
-            throw new InternalErrorException(Constantes.ERRO_INTERNO);
-        }
-    }
-
-    public void realizaValidacaoResponseFocusNfe(ResponseEntity<?> responseEntity,
-                                                 ProxyModuleEnum proxyModuleEnum,
-                                                 ProxyOperationEnum proxyOperationEnum) {
-        if (responseEntity == null) {
-            log.error("O valor retornado pela integradora na [{}] do(a) [{}] é nulo",
-                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc());
-            throw new InternalErrorException(Constantes.ERRO_INTERNO);
-        }
-
-        if (!responseEntity.getStatusCode().is2xxSuccessful()) {
-            log.error("Ocorreu um erro de status de resposta no processo de [{}] do(a) [{}] na integradora " +
-                            "Focus NFE. Corpo da requisição: {}",
-                    proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc(), responseEntity.getBody());
-            throw new InternalErrorException(Constantes.ERRO_INTERNO);
-        }
-
-        if (responseEntity.getBody() == null) {
-            log.error("O valor retornado pela Focus NFE no processo de [{}] do(a) [{}}] é nulo",
                     proxyOperationEnum.getDesc(), proxyModuleEnum.getDesc());
             throw new InternalErrorException(Constantes.ERRO_INTERNO);
         }

@@ -1,7 +1,7 @@
 package br.akd.svc.akadion.web.modules.cliente.proxy.impl.criacao;
 
-import br.akd.svc.akadion.web.exceptions.InternalErrorException;
-import br.akd.svc.akadion.web.globals.proxy.ProxyUtils;
+import br.akd.svc.akadion.web.exceptions.custom.InternalErrorException;
+import br.akd.svc.akadion.web.globals.proxy.AsaasProxyUtils;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyModuleEnum;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyOperationEnum;
 import br.akd.svc.akadion.web.modules.cliente.models.dto.request.criacao.ClienteSistemaRequest;
@@ -25,7 +25,7 @@ public class CriacaoClienteSistemaAsaasProxyImpl {
     ClienteSistemaAsaasProxy clienteAsaasProxy;
 
     @Autowired
-    ProxyUtils proxyUtils;
+    AsaasProxyUtils proxyUtils;
 
     public String realizaCriacaoClienteAsaas(ClienteSistemaRequest clienteRequest)
             throws JsonProcessingException {

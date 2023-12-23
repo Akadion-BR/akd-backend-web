@@ -1,7 +1,7 @@
 package br.akd.svc.akadion.web.modules.plano.proxy.operations.atualizacao.impl;
 
-import br.akd.svc.akadion.web.exceptions.InternalErrorException;
-import br.akd.svc.akadion.web.globals.proxy.ProxyUtils;
+import br.akd.svc.akadion.web.exceptions.custom.InternalErrorException;
+import br.akd.svc.akadion.web.globals.proxy.AsaasProxyUtils;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyModuleEnum;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyOperationEnum;
 import br.akd.svc.akadion.web.modules.plano.models.entity.PlanoEntity;
@@ -24,7 +24,7 @@ public class AtualizacaoPlanoAsaasProxyImpl {
     PlanoAsaasProxy planoAsaasProxy;
 
     @Autowired
-    ProxyUtils proxyUtils;
+    AsaasProxyUtils proxyUtils;
 
     public void realizaAtualizacaoDePlanoDeAssinaturaNaIntegradoraAsaas(PlanoEntity planoAtualizado) throws JsonProcessingException {
 

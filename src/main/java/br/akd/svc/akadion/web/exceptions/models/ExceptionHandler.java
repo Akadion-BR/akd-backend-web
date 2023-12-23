@@ -1,5 +1,6 @@
-package br.akd.svc.akadion.web.exceptions;
+package br.akd.svc.akadion.web.exceptions.models;
 
+import br.akd.svc.akadion.web.exceptions.custom.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<StandartError> invalidRequestException(HttpServletRequest req,
                                                                  InvalidRequestException invalidRequestException) {
         StandartError standartError = StandartError.builder()
-                .localDateTime(LocalDateTime.now())
+                .localDateTime(LocalDateTime.now().toString())
                 .status(400)
                 .error(invalidRequestException.getMessage())
                 .path(req.getRequestURI())
@@ -36,7 +37,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<StandartError> feignConnectionException(HttpServletRequest req,
                                                                   FeignConnectionException feignConnectionException) {
         StandartError standartError = StandartError.builder()
-                .localDateTime(LocalDateTime.now())
+                .localDateTime(LocalDateTime.now().toString())
                 .status(500)
                 .error(feignConnectionException.getMessage())
                 .path(req.getRequestURI())
@@ -48,7 +49,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<StandartError> objectNotFoundException(HttpServletRequest req,
                                                                  ObjectNotFoundException objectNotFoundException) {
         StandartError standartError = StandartError.builder()
-                .localDateTime(LocalDateTime.now())
+                .localDateTime(LocalDateTime.now().toString())
                 .status(404)
                 .error(objectNotFoundException.getMessage())
                 .path(req.getRequestURI())
@@ -60,7 +61,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<StandartError> unauthorizedAccessException(HttpServletRequest req,
                                                                      UnauthorizedAccessException unauthorizedAccessException) {
         StandartError standartError = StandartError.builder()
-                .localDateTime(LocalDateTime.now())
+                .localDateTime(LocalDateTime.now().toString())
                 .status(401)
                 .error(unauthorizedAccessException.getMessage())
                 .path(req.getRequestURI())
@@ -72,7 +73,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<StandartError> internalErrorException(HttpServletRequest req,
                                                                 InternalErrorException exception) {
         StandartError standartError = StandartError.builder()
-                .localDateTime(LocalDateTime.now())
+                .localDateTime(LocalDateTime.now().toString())
                 .status(500)
                 .error(exception.getMessage())
                 .path(req.getRequestURI())
@@ -92,11 +93,15 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error -> errors.add(error.getDefaultMessage()));
 
         StandartError standartError = StandartError.builder()
-                .localDateTime(LocalDateTime.now())
+                .localDateTime(LocalDateTime.now().toString())
                 .status(400)
-                .error(errors.toString())
+                .error((errors.size() > 1
+                        ? "Ocorreram alguns erros de validação no formulário: "
+                        : "Ocorreu um erro de validação no formulário: ")
+                        + (errors.toString().replace("[", "").replace("]", "")))
                 .path(((ServletWebRequest) request).getRequest().getRequestURI())
                 .build();
+
         return ResponseEntity.status(status).body(standartError);
     }
 
