@@ -1,7 +1,7 @@
 package br.akd.svc.akadion.web.modules.empresa.proxy.operations.criacao.impl;
 
-import br.akd.svc.akadion.web.exceptions.InternalErrorException;
-import br.akd.svc.akadion.web.globals.proxy.ProxyUtils;
+import br.akd.svc.akadion.web.exceptions.custom.InternalErrorException;
+import br.akd.svc.akadion.web.globals.proxy.FocusProxyUtils;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyModuleEnum;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyOperationEnum;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
@@ -25,7 +25,7 @@ public class CriacaoEmpresaFocusProxyImpl {
     EmpresaProxy empresaProxy;
 
     @Autowired
-    ProxyUtils proxyUtils;
+    FocusProxyUtils proxyUtils;
 
     public CriaEmpresaFocusResponse realizaCriacaoDeEmpresaNaIntegradoraFocusNfe(Boolean homologacao,
                                                                                  EmpresaRequest empresaRequest) {
