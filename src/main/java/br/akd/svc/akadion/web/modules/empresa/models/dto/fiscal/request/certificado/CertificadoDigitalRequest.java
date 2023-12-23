@@ -3,6 +3,7 @@ package br.akd.svc.akadion.web.modules.empresa.models.dto.fiscal.request.certifi
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -20,6 +21,6 @@ public class CertificadoDigitalRequest {
     @NotEmpty(message = "A composição do arquivo deve estar preenchido")
     String base64;
 
-    @NotEmpty(message = "O tamanho do arquivo deve estar preenchido")
+    @NotNull(message = "O tamanho do arquivo deve estar preenchido")
     private Long tamanhoArquivo;
 }
