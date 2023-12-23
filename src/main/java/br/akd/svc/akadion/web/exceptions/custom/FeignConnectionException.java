@@ -1,11 +1,11 @@
-package br.akd.svc.akadion.web.exceptions;
+package br.akd.svc.akadion.web.exceptions.custom;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-public class InternalErrorException extends RuntimeException {
-    public InternalErrorException(String message) {
+public class FeignConnectionException extends RuntimeException {
+    public FeignConnectionException(String message) {
         super(message);
     }
 }

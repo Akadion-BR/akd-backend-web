@@ -1,7 +1,7 @@
 package br.akd.svc.akadion.web.modules.plano.proxy.operations.remocao.impl;
 
-import br.akd.svc.akadion.web.exceptions.InternalErrorException;
-import br.akd.svc.akadion.web.globals.proxy.ProxyUtils;
+import br.akd.svc.akadion.web.exceptions.custom.InternalErrorException;
+import br.akd.svc.akadion.web.globals.proxy.AsaasProxyUtils;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyModuleEnum;
 import br.akd.svc.akadion.web.globals.proxy.enums.ProxyOperationEnum;
 import br.akd.svc.akadion.web.modules.plano.proxy.PlanoAsaasProxy;
@@ -22,7 +22,7 @@ public class RemocaoPlanoAsaasProxyImpl {
     PlanoAsaasProxy planoAsaasProxy;
 
     @Autowired
-    ProxyUtils proxyUtils;
+    AsaasProxyUtils proxyUtils;
 
     public void realizaCancelamentoDePlanoDeAssinaturaNaIntegradoraAsaas(String asaasId) throws JsonProcessingException {
 

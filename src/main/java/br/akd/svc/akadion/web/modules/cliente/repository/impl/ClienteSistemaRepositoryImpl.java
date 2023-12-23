@@ -1,7 +1,7 @@
 package br.akd.svc.akadion.web.modules.cliente.repository.impl;
 
-import br.akd.svc.akadion.web.exceptions.InternalErrorException;
-import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
+import br.akd.svc.akadion.web.exceptions.custom.InternalErrorException;
+import br.akd.svc.akadion.web.exceptions.custom.ObjectNotFoundException;
 import br.akd.svc.akadion.web.modules.cliente.models.entity.ClienteSistemaEntity;
 import br.akd.svc.akadion.web.modules.cliente.repository.ClienteSistemaRepository;
 import br.akd.svc.akadion.web.utils.Constantes;

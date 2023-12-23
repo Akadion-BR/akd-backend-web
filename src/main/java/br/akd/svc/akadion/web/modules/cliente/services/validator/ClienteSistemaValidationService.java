@@ -1,6 +1,6 @@
 package br.akd.svc.akadion.web.modules.cliente.services.validator;
 
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
 import br.akd.svc.akadion.web.globals.exclusao.entity.ExclusaoEntity;
 import br.akd.svc.akadion.web.modules.cliente.models.dto.request.atualizacao.AtualizaClienteSistemaRequest;
 import br.akd.svc.akadion.web.modules.cliente.models.dto.request.criacao.ClienteSistemaRequest;

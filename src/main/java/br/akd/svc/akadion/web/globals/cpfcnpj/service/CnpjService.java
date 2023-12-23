@@ -1,6 +1,6 @@
 package br.akd.svc.akadion.web.globals.cpfcnpj.service;
 
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
 import br.akd.svc.akadion.web.utils.Constantes;
 import org.springframework.stereotype.Component;
 

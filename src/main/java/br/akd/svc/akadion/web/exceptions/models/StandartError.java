@@ -1,15 +1,14 @@
-package br.akd.svc.akadion.web.exceptions;
+package br.akd.svc.akadion.web.exceptions.models;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Builder
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StandartError {
-    private LocalDateTime localDateTime;
+    private String localDateTime;
     private Integer status;
     private String error;
     private String path;

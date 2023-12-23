@@ -1,7 +1,7 @@
 package br.akd.svc.akadion.web.modules.pagamento.hook.controller;
 
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
-import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.ObjectNotFoundException;
 import br.akd.svc.akadion.web.modules.pagamento.hook.models.AtualizacaoPagamentoWebHook;
 import br.akd.svc.akadion.web.modules.pagamento.hook.services.PagamentoWebhookService;
 import io.swagger.v3.oas.annotations.Operation;

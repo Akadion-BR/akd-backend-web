@@ -1,8 +1,8 @@
 package br.akd.svc.akadion.web.modules.plano.controller;
 
-import br.akd.svc.akadion.web.exceptions.FeignConnectionException;
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
-import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
+import br.akd.svc.akadion.web.exceptions.custom.FeignConnectionException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.ObjectNotFoundException;
 import br.akd.svc.akadion.web.modules.plano.models.dto.request.PlanoRequest;
 import br.akd.svc.akadion.web.modules.plano.models.dto.response.PlanoResponse;
 import br.akd.svc.akadion.web.modules.plano.services.crud.PlanoService;

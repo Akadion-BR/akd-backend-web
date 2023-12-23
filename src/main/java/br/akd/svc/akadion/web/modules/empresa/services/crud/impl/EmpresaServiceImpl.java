@@ -1,7 +1,7 @@
 package br.akd.svc.akadion.web.modules.empresa.services.crud.impl;
 
-import br.akd.svc.akadion.web.exceptions.InternalErrorException;
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.InternalErrorException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
 import br.akd.svc.akadion.web.globals.cpfcnpj.models.CnpjRequest;
 import br.akd.svc.akadion.web.globals.cpfcnpj.service.CnpjService;
 import br.akd.svc.akadion.web.globals.exclusao.entity.ExclusaoEntity;

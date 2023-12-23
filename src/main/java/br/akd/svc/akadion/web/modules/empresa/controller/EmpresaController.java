@@ -1,8 +1,8 @@
 package br.akd.svc.akadion.web.modules.empresa.controller;
 
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
-import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
-import br.akd.svc.akadion.web.exceptions.UnauthorizedAccessException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.ObjectNotFoundException;
+import br.akd.svc.akadion.web.exceptions.custom.UnauthorizedAccessException;
 import br.akd.svc.akadion.web.globals.cpfcnpj.models.CnpjRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.response.CriaEmpresaResponse;
@@ -68,8 +68,9 @@ public class EmpresaController {
                             schema = @Schema(implementation = UnauthorizedAccessException.class))})
     })
     public ResponseEntity<CriaEmpresaResponse> criaEmpresa(@AuthenticationPrincipal UUID idClienteSessao,
-                                                           @RequestBody EmpresaRequest empresaRequest) {
+                                                           @Valid @RequestBody EmpresaRequest empresaRequest) {
         log.info("Método controlador de criação de nova empresa acessado");
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(empresaService.criaNovaEmpresa(

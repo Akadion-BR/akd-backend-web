@@ -1,6 +1,6 @@
 package br.akd.svc.akadion.web.globals.imagem.utils;
 
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
 import br.akd.svc.akadion.web.globals.imagem.enums.TipoImagemEnum;
 
 public class ImagemUtils {

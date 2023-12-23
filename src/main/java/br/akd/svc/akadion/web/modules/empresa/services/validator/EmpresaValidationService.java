@@ -1,6 +1,6 @@
 package br.akd.svc.akadion.web.modules.empresa.services.validator;
 
-import br.akd.svc.akadion.web.exceptions.InvalidRequestException;
+import br.akd.svc.akadion.web.exceptions.custom.InvalidRequestException;
 import br.akd.svc.akadion.web.modules.empresa.models.dto.request.EmpresaRequest;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
 import br.akd.svc.akadion.web.modules.empresa.repository.impl.EmpresaRepositoryImpl;

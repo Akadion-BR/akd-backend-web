@@ -1,6 +1,6 @@
 package br.akd.svc.akadion.web.modules.plano.services.crud.impl;
 
-import br.akd.svc.akadion.web.exceptions.InternalErrorException;
+import br.akd.svc.akadion.web.exceptions.custom.InternalErrorException;
 import br.akd.svc.akadion.web.modules.cliente.models.entity.ClienteSistemaEntity;
 import br.akd.svc.akadion.web.modules.cliente.repository.impl.ClienteSistemaRepositoryImpl;
 import br.akd.svc.akadion.web.modules.plano.models.dto.request.PlanoRequest;

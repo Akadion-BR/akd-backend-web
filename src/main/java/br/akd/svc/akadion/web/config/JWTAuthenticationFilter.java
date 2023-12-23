@@ -1,6 +1,6 @@
 package br.akd.svc.akadion.web.config;
 
-import br.akd.svc.akadion.web.exceptions.UnauthorizedAccessException;
+import br.akd.svc.akadion.web.exceptions.custom.UnauthorizedAccessException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

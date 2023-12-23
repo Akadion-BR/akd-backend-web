@@ -1,6 +1,6 @@
 package br.akd.svc.akadion.web.modules.pagamento.repository.impl;
 
-import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
+import br.akd.svc.akadion.web.exceptions.custom.ObjectNotFoundException;
 import br.akd.svc.akadion.web.modules.pagamento.models.entity.PagamentoSistemaEntity;
 import br.akd.svc.akadion.web.modules.pagamento.repository.PagamentoSistemaRepository;
 import lombok.extern.slf4j.Slf4j;

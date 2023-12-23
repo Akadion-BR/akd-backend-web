@@ -1,6 +1,6 @@
 package br.akd.svc.akadion.web.modules.empresa.repository.impl;
 
-import br.akd.svc.akadion.web.exceptions.ObjectNotFoundException;
+import br.akd.svc.akadion.web.exceptions.custom.ObjectNotFoundException;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.EmpresaEntity;
 import br.akd.svc.akadion.web.modules.empresa.models.entity.id.EmpresaId;
 import br.akd.svc.akadion.web.modules.empresa.repository.EmpresaRepository;
