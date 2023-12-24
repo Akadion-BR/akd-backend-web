@@ -111,4 +111,10 @@ public class EmpresaValidationService {
         log.info("Validação de chave única de inscrição municipal... OK");
     }
 
+    public void validaSeAtributosObrigatoriosParaNfeEstaoPreenchidos(EmpresaRequest empresaRequest) {
+
+        if (ObjectUtils.isEmpty(empresaRequest.getInscricaoEstadual()))
+            throw new InvalidRequestException("A inscrição estadual deverá ser informada para emissão de NFE. " +
+                    "Preencha o campo inscrição estadual ou desabilite a emissão de NFE");
+    }
 }
