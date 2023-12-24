@@ -19,9 +19,8 @@ import br.akd.svc.akadion.web.modules.empresa.proxy.operations.criacao.impl.Cria
 import br.akd.svc.akadion.web.modules.empresa.proxy.operations.criacao.models.response.CriaEmpresaFocusResponse;
 import br.akd.svc.akadion.web.modules.empresa.repository.impl.EmpresaRepositoryImpl;
 import br.akd.svc.akadion.web.modules.empresa.services.crud.EmpresaService;
+import br.akd.svc.akadion.web.modules.empresa.services.crud.utils.EmpresaServiceUtils;
 import br.akd.svc.akadion.web.modules.empresa.services.validator.EmpresaValidationService;
-import br.akd.svc.akadion.web.modules.external.erp.colaborador.CriacaoColaboradorResponse;
-import br.akd.svc.akadion.web.modules.external.erp.colaborador.proxy.impl.ColaboradorProxyImpl;
 import br.akd.svc.akadion.web.utils.Constantes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +51,12 @@ public class EmpresaServiceImpl implements EmpresaService {
     CnpjService cnpjService;
 
     @Autowired
-    ColaboradorProxyImpl colaboradorProxy;
+    EmpresaServiceUtils empresaServiceUtils;
 
     @Autowired
     CriacaoEmpresaFocusProxyImpl criacaoEmpresaFocusProxy;
 
     @Override
-    @Transactional
     public CriaEmpresaResponse criaNovaEmpresa(UUID idClienteSistemaSessao,
                                                EmpresaRequest empresaRequest) {
 
@@ -74,6 +72,9 @@ public class EmpresaServiceImpl implements EmpresaService {
 
         log.info("Iniciando acesso ao método de validação de variáveis de chave única para empresa...");
         empresaValidationService.validacaoDeChaveUnicaParaNovaEmpresa(empresaRequest);
+
+        log.info("Iniciando acesso ao método de validação se atributos obrigatórios para cada tipo de NF estão preenchidos...");
+        empresaValidationService.validaSeAtributosObrigatoriosParaNfeEstaoPreenchidos(empresaRequest);
 
         CriaEmpresaFocusResponse criaEmpresaFocusResponse = criacaoEmpresaFocusProxy
                 .realizaCriacaoDeEmpresaNaIntegradoraFocusNfe(true, empresaRequest);
@@ -91,30 +92,12 @@ public class EmpresaServiceImpl implements EmpresaService {
         clienteSistema.addEmpresa(empresaEntity);
         log.info("Empresa adicionada à lista de empresas do cliente com sucesso");
 
-        log.info("Iniciando acesso ao método de implementação de persistência do cliente sistêmico...");
-        ClienteSistemaEntity clienteSistemaEntity =
-                clienteSistemaRepositoryImpl.implementaPersistencia(clienteSistema);
-        log.info("Persistência do cliente sistêmico realizada com sucesso");
-
-        log.info("Obtendo empresa criada da lista das empresas do cliente persistido...");
-        EmpresaEntity empresaCriada = clienteSistemaEntity
-                .obtemEmpresaPorRazaoSocial(empresaRequest.getRazaoSocial());
-        log.info("Empresa persistida obtida com sucesso");
-
-        log.info("Iniciando acesso ao método de criação de novo colaborador admin para empresa...");
-        CriacaoColaboradorResponse criacaoColaboradorResponse =
-                colaboradorProxy.realizaCriacaoDeColaboradorNoErp(new EmpresaId(empresaCriada.getClienteSistema().getId(), empresaCriada.getId()));
-        log.info("Colaborador criado com sucesso para nova empresa");
-
-        log.info("Iniciando objeto do tipo CriaEmpresaResponse...");
-        CriaEmpresaResponse criaEmpresaResponse = new CriaEmpresaResponse(
-                clienteSistemaEntity.getId(),
-                criacaoColaboradorResponse,
-                new EmpresaResponse().buildFromEntity(empresaCriada));
-        log.info("Objeto criado com sucesso");
-
-        log.info("Método responsável por realizar a criação da empresa executado com sucesso. Retornando response...");
-        return criaEmpresaResponse;
+        try {
+            return empresaServiceUtils.implementaLogicaDeCadastroEmpresa(empresaRequest, clienteSistema);
+        } catch (Exception e) {
+            log.error("Ocorreu um erro durante a tentativa de criação da empresa. Erro: {}", e.getMessage());
+            throw new InternalErrorException(Constantes.ERRO_INTERNO);
+        }
     }
 
     @Override
