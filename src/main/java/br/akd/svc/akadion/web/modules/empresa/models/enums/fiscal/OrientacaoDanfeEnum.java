@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public enum OrientacaoDanfeEnum {
 
-    PORTRAIT(1, "retrato"),
-    LANDSCAPE(2, "paisagem");
+    PORTRAIT(1, "portrait"),
+    LANDSCAPE(2, "landscape");
 
     private final int code;
     private final String desc;
