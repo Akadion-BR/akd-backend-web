@@ -75,9 +75,8 @@ public class CriaEmpresaFocusRequest {
     @JsonProperty(value = "habilita_nfse")
     private Boolean habilitaNfse;
 
-    //TODO REINSERIR
-//    @JsonProperty(value = "orientacao_danfe")
-//    private OrientacaoDanfeEnum orientacaoDanfe;
+    @JsonProperty(value = "orientacao_danfe")
+    private String orientacaoDanfe;
 
     @JsonProperty(value = "recibo_danfe")
     private Boolean reciboDanfe;
@@ -153,7 +152,7 @@ public class CriaEmpresaFocusRequest {
 
     public CriaEmpresaFocusRequest buildFromEmpresaRequest(EmpresaRequest empresaRequest) {
         return CriaEmpresaFocusRequest.builder()
-                .nome(empresaRequest.getNomeFantasia())
+                .nome(empresaRequest.getRazaoSocial())
                 .nomeFantasia(empresaRequest.getNomeFantasia())
                 .inscricaoEstadual(empresaRequest.getInscricaoEstadual())
                 .inscricaoMunicipal(empresaRequest.getInscricaoMunicipal())
@@ -175,9 +174,9 @@ public class CriaEmpresaFocusRequest {
                 .habilitaNfe(empresaRequest.getConfigFiscal().getHabilitaNfe())
                 .habilitaNfce(empresaRequest.getConfigFiscal().getHabilitaNfce())
                 .habilitaNfse(empresaRequest.getConfigFiscal().getHabilitaNfse())
-//                .orientacaoDanfe(empresaRequest.getConfigFiscal().getNfeConfig() != null
-//                        ? empresaRequest.getConfigFiscal().getNfeConfig().getOrientacaoDanfe()
-//                        : null)
+                .orientacaoDanfe(empresaRequest.getConfigFiscal().getNfeConfig() != null
+                        ? empresaRequest.getConfigFiscal().getNfeConfig().getOrientacaoDanfe().getDesc()
+                        : null)
                 .reciboDanfe(empresaRequest.getConfigFiscal().getNfeConfig() != null
                         && empresaRequest.getConfigFiscal().getNfeConfig().getExibirReciboNaDanfe())
                 .exibeSempreIpiDanfe(empresaRequest.getConfigFiscal().getNfeConfig() != null
@@ -202,7 +201,7 @@ public class CriaEmpresaFocusRequest {
                         : null)
                 .proximoNumeroNfeHomologacao(null)
                 .serieNfeProducao(empresaRequest.getConfigFiscal().getNfeConfig() != null
-                        ? empresaRequest.getConfigFiscal().getNfeConfig().getProximoNumeroProducao().toString()
+                        ? empresaRequest.getConfigFiscal().getNfeConfig().getSerieProducao().toString()
                         : null)
                 .serieNfeHomologacao(null)
                 .proximoNumeroNfceProducao(empresaRequest.getConfigFiscal().getNfceConfig() != null
@@ -218,7 +217,7 @@ public class CriaEmpresaFocusRequest {
                         : null)
                 .proximoNumeroNfseHomologacao(null)
                 .serieNfseProducao(empresaRequest.getConfigFiscal().getNfseConfig() != null
-                        ? empresaRequest.getConfigFiscal().getNfseConfig().getProximoNumeroProducao().toString()
+                        ? empresaRequest.getConfigFiscal().getNfseConfig().getSerieProducao().toString()
                         : null)
                 .serieNfseHomologacao(null)
                 .arquivoCertificadoBase64(empresaRequest.getConfigFiscal().getCertificadoDigital() != null
