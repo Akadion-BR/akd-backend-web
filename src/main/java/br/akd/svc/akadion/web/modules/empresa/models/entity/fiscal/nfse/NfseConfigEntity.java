@@ -27,19 +27,19 @@ public class NfseConfigEntity {
     private UUID id;
 
     @Comment("Próximo número de NFSE em produção")
-    @Column(name = "LNG_PROXIMONUMEROPRODUCAO_NFSECFG", nullable = false)
+    @Column(name = "LNG_PROXIMONUMEROPRODUCAO_NFSECFG")
     private Long proximoNumeroProducao;
 
     @Comment("Próximo número de NFSE em homologação")
-    @Column(name = "LNG_PROXIMONUMEROHOMOLOGACAO_NFSECFG", nullable = false)
+    @Column(name = "LNG_PROXIMONUMEROHOMOLOGACAO_NFSECFG")
     private Long proximoNumeroHomologacao;
 
     @Comment("Próxima série de NFSE em produção")
-    @Column(name = "INT_SERIEPRODUCAO_NFSECFG", nullable = false)
+    @Column(name = "INT_SERIEPRODUCAO_NFSECFG")
     private Integer serieProducao;
 
     @Comment("Próxima série de NFSE em homologação")
-    @Column(name = "INT_SERIEHOMOLOGACAO_NFSECFG", nullable = false)
+    @Column(name = "INT_SERIEHOMOLOGACAO_NFSECFG")
     private Integer serieHomologacao;
 
     public NfseConfigEntity buildFromRequest(NfseConfigRequest nfseConfigRequest) {

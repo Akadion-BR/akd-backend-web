@@ -28,19 +28,19 @@ public class NfceConfigEntity {
     private UUID id;
 
     @Comment("Próximo número de NFCE em produção")
-    @Column(name = "LNG_PROXIMONUMEROPRODUCAO_NFCECFG", nullable = false)
+    @Column(name = "LNG_PROXIMONUMEROPRODUCAO_NFCECFG")
     private Long proximoNumeroProducao;
 
     @Comment("Próximo número de NFCE em homologação")
-    @Column(name = "LNG_PROXIMONUMEROHOMOLOGACAO_NFCECFG", nullable = false)
+    @Column(name = "LNG_PROXIMONUMEROHOMOLOGACAO_NFCECFG")
     private Long proximoNumeroHomologacao;
 
     @Comment("Próxima série de NFCE em produção")
-    @Column(name = "INT_SERIEPRODUCAO_NFCECFG", nullable = false)
+    @Column(name = "INT_SERIEPRODUCAO_NFCECFG")
     private Integer serieProducao;
 
     @Comment("Próxima série de NFCE em homologação")
-    @Column(name = "INT_SERIEHOMOLOGACAO_NFCECFG", nullable = false)
+    @Column(name = "INT_SERIEHOMOLOGACAO_NFCECFG")
     private Integer serieHomologacao;
 
     @Comment("CSC de produção")
@@ -48,7 +48,7 @@ public class NfceConfigEntity {
     private String cscProducao;
 
     @Comment("CSC de homologação")
-    @Column(name = "STR_CSCHOMOLOGACAO_NFCECFG", nullable = false)
+    @Column(name = "STR_CSCHOMOLOGACAO_NFCECFG")
     private String cscHomologacao;
 
     @Comment("ID do token de produção")
@@ -56,7 +56,7 @@ public class NfceConfigEntity {
     private Long idTokenProducao;
 
     @Comment("ID do token de homologação")
-    @Column(name = "LONG_IDTOKENHOMOLOGACAO_NFCECFG", nullable = false)
+    @Column(name = "LONG_IDTOKENHOMOLOGACAO_NFCECFG")
     private Long idTokenHomologacao;
 
     public NfceConfigEntity buildFromRequest(NfceConfigRequest nfceConfigRequest) {

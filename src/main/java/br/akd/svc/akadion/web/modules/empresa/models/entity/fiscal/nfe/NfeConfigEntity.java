@@ -28,19 +28,19 @@ public class NfeConfigEntity {
     private UUID id;
 
     @Comment("Próximo número de NFE em produção")
-    @Column(name = "LNG_PROXIMONUMEROPRODUCAO_NFECFG", nullable = false)
+    @Column(name = "LNG_PROXIMONUMEROPRODUCAO_NFECFG")
     private Long proximoNumeroProducao;
 
     @Comment("Próximo número de NFE em homologação")
-    @Column(name = "LNG_PROXIMONUMEROHOMOLOGACAO_NFECFG", nullable = false)
+    @Column(name = "LNG_PROXIMONUMEROHOMOLOGACAO_NFECFG")
     private Long proximoNumeroHomologacao;
 
     @Comment("Próxima série de NFE em produção")
-    @Column(name = "INT_SERIEPRODUCAO_NFECFG", nullable = false)
+    @Column(name = "INT_SERIEPRODUCAO_NFECFG")
     private Integer serieProducao;
 
     @Comment("Próxima série de NFE em homologação")
-    @Column(name = "INT_SERIEHOMOLOGACAO_NFECFG", nullable = false)
+    @Column(name = "INT_SERIEHOMOLOGACAO_NFECFG")
     private Integer serieHomologacao;
 
     @Comment("Exibir recibo na DANFE")
