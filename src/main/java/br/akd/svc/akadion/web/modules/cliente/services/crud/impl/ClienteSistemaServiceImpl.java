@@ -97,7 +97,7 @@ public class ClienteSistemaServiceImpl implements ClienteSistemaService {
             log.info("Criação do cliente sistêmico realizada com sucesso. Retornando dados...");
             return clienteSistemaResponse;
         } catch (Exception e) {
-            log.error("Ocorreu um erro durante a tentativa de persistência do plano. " +
+            log.error("Ocorreu um erro durante a tentativa de criação do cliente sistêmico. " +
                     "Erro: {}", e.getMessage());
 
             log.info("Iniciando acesso ao método de cancelamento do plano na integradora ASAAS " +
