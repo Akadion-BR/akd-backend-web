@@ -74,7 +74,7 @@ public class EmpresaServiceImpl implements EmpresaService {
         empresaValidationService.validacaoDeChaveUnicaParaNovaEmpresa(empresaRequest);
 
         log.info("Iniciando acesso ao método de validação se atributos obrigatórios para cada tipo de NF estão preenchidos...");
-        empresaValidationService.validaSeAtributosObrigatoriosParaNfeEstaoPreenchidos(empresaRequest);
+        empresaValidationService.validaSeAtributosObrigatoriosParaCadaTipoDeNfEstaoPreenchidos(empresaRequest);
 
         CriaEmpresaFocusResponse criaEmpresaFocusResponse = criacaoEmpresaFocusProxy
                 .realizaCriacaoDeEmpresaNaIntegradoraFocusNfe(true, empresaRequest);

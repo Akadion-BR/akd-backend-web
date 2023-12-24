@@ -111,10 +111,37 @@ public class EmpresaValidationService {
         log.info("Validação de chave única de inscrição municipal... OK");
     }
 
+    public void validaSeAtributosObrigatoriosParaCadaTipoDeNfEstaoPreenchidos(EmpresaRequest empresaRequest) {
+
+        if (empresaRequest.getConfigFiscal().getHabilitaNfe())
+            validaSeAtributosObrigatoriosParaNfeEstaoPreenchidos(empresaRequest);
+
+        if (empresaRequest.getConfigFiscal().getHabilitaNfce())
+            validaSeAtributosObrigatoriosParaNfceEstaoPreenchidos(empresaRequest);
+
+        if (empresaRequest.getConfigFiscal().getHabilitaNfse())
+            validaSeAtributosObrigatoriosParaNfseEstaoPreenchidos(empresaRequest);
+
+    }
+
     public void validaSeAtributosObrigatoriosParaNfeEstaoPreenchidos(EmpresaRequest empresaRequest) {
 
         if (ObjectUtils.isEmpty(empresaRequest.getInscricaoEstadual()))
             throw new InvalidRequestException("A inscrição estadual deverá ser informada para emissão de NFE. " +
                     "Preencha o campo inscrição estadual ou desabilite a emissão de NFE");
+    }
+
+    public void validaSeAtributosObrigatoriosParaNfceEstaoPreenchidos(EmpresaRequest empresaRequest) {
+
+        if (ObjectUtils.isEmpty(empresaRequest.getInscricaoEstadual()))
+            throw new InvalidRequestException("A inscrição estadual deverá ser informada para emissão de NFCE. " +
+                    "Preencha o campo inscrição estadual ou desabilite a emissão de NFCE");
+    }
+
+    public void validaSeAtributosObrigatoriosParaNfseEstaoPreenchidos(EmpresaRequest empresaRequest) {
+
+        if (ObjectUtils.isEmpty(empresaRequest.getInscricaoMunicipal()))
+            throw new InvalidRequestException("A inscrição municipal deverá ser informada para emissão de NFSE. " +
+                    "Preencha o campo inscrição municipal ou desabilite a emissão de NFSE");
     }
 }
